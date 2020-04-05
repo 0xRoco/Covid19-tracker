@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace covid19_tracker
+namespace covid19_trackerGUI
 {
-    public class jsonParse
+    class jsonParse 
     {
 
         public class Cases
@@ -35,7 +35,7 @@ namespace covid19_tracker
 
         public class Tracker
         {
-            public List<Response> Response { get; set; } 
+            public List<Response> Response { get; set; }
         }
     }
 }

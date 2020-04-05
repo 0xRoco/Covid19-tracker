@@ -1,0 +1,36 @@
+﻿<Window x:Class="covid19_trackerGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:covid19_trackerGUI"
+        xmlns:viewModels="clr-namespace:covid19_trackerGUI.ViewModels"
+        mc:Ignorable="d"
+        Background="#424242"
+        Foreground="#ecf0f1"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Center" Height="auto" Width="auto" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>
+            <TextBlock  Text="{Binding wwTotalCases,StringFormat={}Total Cases: {0} }" Grid.Row="0" />
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1" >
+                <ListView Name="cList" Background="#212121" BorderThickness="0" >
+                    <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding TotalCases}" Foreground="#D50000" FontWeight="Bold"></Run>
+                            <Run Text=" "></Run>
+                            <Run Text="{Binding Name}" Foreground="#EEEEEE"></Run>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

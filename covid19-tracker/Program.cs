@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using RestSharp;
 
 namespace covid19_tracker
 {
@@ -13,42 +13,44 @@ namespace covid19_tracker
         private static jsonParse.Tracker _track = new jsonParse.Tracker();
         private static DateTime _timeSinceLastUpdate = DateTime.Now;
         private static int _allIndex;
-        private static int _maxUpdatetime = 1800;
+        private static readonly int _maxUpdatetime = 1800;
+
         private static void Main()
         {
             //DeserializeObject<jsonParse.Tracker>(rawjson);
             //apiGetAllInfectedCountries();
-            Task.Run((() => UpdateTimer()));
-            string jsonraw = File.ReadAllText("AllInfectedCountries.json");
+            Task.Run(UpdateTimer);
+            var jsonraw = File.ReadAllText("AllInfectedCountries.json");
             _track = JsonConvert.DeserializeObject<jsonParse.Tracker>(jsonraw);
-            foreach (var response in _track.Response.Where(x => x.Country=="All")) _allIndex = _track.Response.IndexOf(response);
+            foreach (var response in _track.Response.Where(x => x.Country == "All"))
+                _allIndex = _track.Response.IndexOf(response);
             while (true)
             {
                 var command = Console.ReadLine();
-                var cIndex=0;
+                var cIndex = 0;
                 if (command == null) continue;
                 if (command.StartsWith("info"))
                 {
                     var country = command.Remove(0, command.IndexOf(' ') + 1).ToLower();
                     foreach (var response in _track.Response.Where(x => x.Country.ToLower().StartsWith(country)))
-                    {
                         cIndex = _track.Response.IndexOf(response);
-                    }
                     //Logs($"[Debug] Searched: {country} GOT {track.Response[c_index].Country}");
-                    Logs($"[{_track.Response[cIndex].Country}] Total infected: {_track.Response[cIndex].Cases.Total} - Total recoveries: {_track.Response[cIndex].Cases.Recovered} - Total deaths: {_track.Response[cIndex].Deaths.Total}");
-                }else if (command.ToLower().Equals("--fupdate"))
+                    Logs(
+                        $"[{_track.Response[cIndex].Country}] Total infected: {_track.Response[cIndex].Cases.Total} - Total recoveries: {_track.Response[cIndex].Cases.Recovered} - Total deaths: {_track.Response[cIndex].Deaths.Total}");
+                }
+                else if (command.ToLower().Equals("--fupdate"))
                 {
                     //Task.Run((() => UpdateTimer(true)));
-                }else if (command.ToLower().Equals("--settings"))
+                }
+                else if (command.ToLower().Equals("--settings"))
                 {
-
-                }else if (command.ToLower().StartsWith("--com"))
+                }
+                else if (command.ToLower().StartsWith("--com"))
                 {
-
                 }
                 else
                 {
-                    Logs("UNKNOWN COMMAND!",0);
+                    Logs("UNKNOWN COMMAND!", 0);
                 }
             }
         }
@@ -62,8 +64,11 @@ namespace covid19_tracker
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (!(ts.TotalSeconds >= _maxUpdatetime))
                 {
-                     //Logs($"[Debug] {Convert.ToInt32(ts.TotalSeconds).ToString()}/{_maxUpdatetime} next update timer progress!"); 
-                     await Task.Delay(5000); continue;}
+                    //Logs($"[Debug] {Convert.ToInt32(ts.TotalSeconds).ToString()}/{_maxUpdatetime} next update timer progress!"); 
+                    await Task.Delay(5000);
+                    continue;
+                }
+
                 _timeSinceLastUpdate = DateTime.Now;
                 await ApiGetAllInfectedCountries();
                 Logs("Updated all countries", 1);
@@ -76,18 +81,19 @@ namespace covid19_tracker
             }
         }
 
-        static async Task ApiGetAllInfectedCountries()
+        private static async Task ApiGetAllInfectedCountries()
         {
             await Task.Delay(500);
             _client = new RestClient("https://covid-193.p.rapidapi.com/statistics");
             var request = new RestRequest(Method.GET);
             request.AddHeader("x-rapidapi-host", "covid-193.p.rapidapi.com");
             request.AddHeader("x-rapidapi-key", "db654bb9eemshe5a8718dd1418ffp1b94abjsna0a6321ba60a");
-            IRestResponse response = _client.Execute(request);
+            var response = _client.Execute(request);
             _track = JsonConvert.DeserializeObject<jsonParse.Tracker>(response.Content);
-            File.WriteAllText(@"./AllInfectedCountries.json",response.Content);
+            File.WriteAllText(@"./AllInfectedCountries.json", response.Content);
         }
-        static void Logs(string text, int code=-1)
+
+        private static void Logs(string text, int code = -1)
         {
             switch (code)
             {
@@ -100,8 +106,8 @@ namespace covid19_tracker
                 default:
                     Console.ResetColor();
                     break;
-
             }
+
             Console.WriteLine($"{DateTime.Now:f} - {text}");
             Console.ResetColor();
         }

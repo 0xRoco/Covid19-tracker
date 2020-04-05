@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>Program.cs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #789deb;}
+.s1 { color: #d0d0d0;}
+.s2 { color: #bdbdbd;}
+.s3 { color: #ed94c0;}
+.s4 { color: #85c46c; font-style: italic;}
+.s5 { color: #dea860;}
+</style>
+</head>
+<body bgcolor="#282828">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Program.cs</font>
+</center></td></tr></table>
+<pre><span class="s0">using </span><span class="s1">System</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">System</span><span class="s2">.</span><span class="s1">IO</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">System</span><span class="s2">.</span><span class="s1">Linq</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">System</span><span class="s2">.</span><span class="s1">Threading</span><span class="s2">.</span><span class="s1">Tasks</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">Newtonsoft</span><span class="s2">.</span><span class="s1">Json</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">RestSharp</span><span class="s2">;</span>
+
+<span class="s0">namespace </span><span class="s1">covid19_tracker</span>
+<span class="s2">{</span>
+    <span class="s0">internal class </span><span class="s1">Program</span>
+    <span class="s2">{</span>
+        <span class="s0">private static </span><span class="s1">RestClient _client </span><span class="s2">= </span><span class="s0">new </span><span class="s1">RestClient</span><span class="s2">();</span>
+        <span class="s0">private static </span><span class="s1">jsonParse</span><span class="s2">.</span><span class="s1">Tracker _track </span><span class="s2">= </span><span class="s0">new </span><span class="s1">jsonParse</span><span class="s2">.</span><span class="s1">Tracker</span><span class="s2">();</span>
+        <span class="s0">private static </span><span class="s1">DateTime _timeSinceLastUpdate </span><span class="s2">= </span><span class="s1">DateTime</span><span class="s2">.</span><span class="s1">Now</span><span class="s2">;</span>
+        <span class="s0">private static int </span><span class="s1">_allIndex</span><span class="s2">;</span>
+        <span class="s0">private static readonly int </span><span class="s1">_maxUpdatetime </span><span class="s2">= </span><span class="s3">1800</span><span class="s2">;</span>
+
+        <span class="s0">private static void </span><span class="s1">Main</span><span class="s2">()</span>
+        <span class="s2">{</span>
+            <span class="s4">//DeserializeObject&lt;jsonParse.Tracker&gt;(rawjson);</span>
+            <span class="s4">//apiGetAllInfectedCountries();</span>
+            <span class="s1">Task</span><span class="s2">.</span><span class="s1">Run</span><span class="s2">(</span><span class="s1">UpdateTimer</span><span class="s2">);</span>
+            <span class="s1">var jsonraw </span><span class="s2">= </span><span class="s1">File</span><span class="s2">.</span><span class="s1">ReadAllText</span><span class="s2">(</span><span class="s5">&quot;AllInfectedCountries.json&quot;</span><span class="s2">);</span>
+            <span class="s1">_track </span><span class="s2">= </span><span class="s1">JsonConvert</span><span class="s2">.</span><span class="s1">DeserializeObject</span><span class="s2">&lt;</span><span class="s1">jsonParse</span><span class="s2">.</span><span class="s1">Tracker</span><span class="s2">&gt;(</span><span class="s1">jsonraw</span><span class="s2">);</span>
+            <span class="s0">foreach </span><span class="s2">(</span><span class="s1">var response </span><span class="s0">in </span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">Where</span><span class="s2">(</span><span class="s1">x =&gt; x</span><span class="s2">.</span><span class="s1">Country </span><span class="s2">== </span><span class="s5">&quot;All&quot;</span><span class="s2">))</span>
+                <span class="s1">_allIndex </span><span class="s2">= </span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">IndexOf</span><span class="s2">(</span><span class="s1">response</span><span class="s2">);</span>
+            <span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">)</span>
+            <span class="s2">{</span>
+                <span class="s1">var command </span><span class="s2">= </span><span class="s1">Console</span><span class="s2">.</span><span class="s1">ReadLine</span><span class="s2">();</span>
+                <span class="s1">var cIndex </span><span class="s2">= </span><span class="s3">0</span><span class="s2">;</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">command </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) </span><span class="s0">continue</span><span class="s2">;</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">command</span><span class="s2">.</span><span class="s1">StartsWith</span><span class="s2">(</span><span class="s5">&quot;info&quot;</span><span class="s2">))</span>
+                <span class="s2">{</span>
+                    <span class="s1">var country </span><span class="s2">= </span><span class="s1">command</span><span class="s2">.</span><span class="s1">Remove</span><span class="s2">(</span><span class="s3">0</span><span class="s2">, </span><span class="s1">command</span><span class="s2">.</span><span class="s1">IndexOf</span><span class="s2">(</span><span class="s5">' '</span><span class="s2">) + </span><span class="s3">1</span><span class="s2">).</span><span class="s1">ToLower</span><span class="s2">();</span>
+                    <span class="s0">foreach </span><span class="s2">(</span><span class="s1">var response </span><span class="s0">in </span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">Where</span><span class="s2">(</span><span class="s1">x =&gt; x</span><span class="s2">.</span><span class="s1">Country</span><span class="s2">.</span><span class="s1">ToLower</span><span class="s2">().</span><span class="s1">StartsWith</span><span class="s2">(</span><span class="s1">country</span><span class="s2">)))</span>
+                        <span class="s1">cIndex </span><span class="s2">= </span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">IndexOf</span><span class="s2">(</span><span class="s1">response</span><span class="s2">);</span>
+                    <span class="s4">//Logs($&quot;[Debug] Searched: {country} GOT {track.Response[c_index].Country}&quot;);</span>
+                    <span class="s1">Logs</span><span class="s2">(</span>
+                        <span class="s5">$&quot;[{</span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">[</span><span class="s1">cIndex</span><span class="s2">].</span><span class="s1">Country</span><span class="s5">}] Total infected: {</span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">[</span><span class="s1">cIndex</span><span class="s2">].</span><span class="s1">Cases</span><span class="s2">.</span><span class="s1">Total</span><span class="s5">} - Total recoveries: {</span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">[</span><span class="s1">cIndex</span><span class="s2">].</span><span class="s1">Cases</span><span class="s2">.</span><span class="s1">Recovered</span><span class="s5">} - Total deaths: {</span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">[</span><span class="s1">cIndex</span><span class="s2">].</span><span class="s1">Deaths</span><span class="s2">.</span><span class="s1">Total</span><span class="s5">}&quot;</span><span class="s2">);</span>
+                <span class="s2">}</span>
+                <span class="s0">else if </span><span class="s2">(</span><span class="s1">command</span><span class="s2">.</span><span class="s1">ToLower</span><span class="s2">().</span><span class="s1">Equals</span><span class="s2">(</span><span class="s5">&quot;--fupdate&quot;</span><span class="s2">))</span>
+                <span class="s2">{</span>
+                    <span class="s4">//Task.Run((() =&gt; UpdateTimer(true)));</span>
+                <span class="s2">}</span>
+                <span class="s0">else if </span><span class="s2">(</span><span class="s1">command</span><span class="s2">.</span><span class="s1">ToLower</span><span class="s2">().</span><span class="s1">Equals</span><span class="s2">(</span><span class="s5">&quot;--settings&quot;</span><span class="s2">))</span>
+                <span class="s2">{</span>
+                <span class="s2">}</span>
+                <span class="s0">else if </span><span class="s2">(</span><span class="s1">command</span><span class="s2">.</span><span class="s1">ToLower</span><span class="s2">().</span><span class="s1">StartsWith</span><span class="s2">(</span><span class="s5">&quot;--com&quot;</span><span class="s2">))</span>
+                <span class="s2">{</span>
+                <span class="s2">}</span>
+                <span class="s0">else</span>
+                <span class="s2">{</span>
+                    <span class="s1">Logs</span><span class="s2">(</span><span class="s5">&quot;UNKNOWN COMMAND!&quot;</span><span class="s2">, </span><span class="s3">0</span><span class="s2">);</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">private static </span><span class="s1">async Task UpdateTimer</span><span class="s2">()</span>
+        <span class="s2">{</span>
+            <span class="s4">//Logs($&quot;[Debug] Update timer started, time since last update : {ts.TotalSeconds}&quot;);</span>
+            <span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">)</span>
+            <span class="s2">{</span>
+                <span class="s1">var ts </span><span class="s2">= </span><span class="s1">DateTime</span><span class="s2">.</span><span class="s1">Now </span><span class="s2">- </span><span class="s1">_timeSinceLastUpdate</span><span class="s2">;</span>
+                <span class="s4">// ReSharper disable once ConditionIsAlwaysTrueOrFalse</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">!</span><span class="s2">(</span><span class="s1">ts</span><span class="s2">.</span><span class="s1">TotalSeconds </span><span class="s2">&gt;= </span><span class="s1">_maxUpdatetime</span><span class="s2">))</span>
+                <span class="s2">{</span>
+                    <span class="s4">//Logs($&quot;[Debug] {Convert.ToInt32(ts.TotalSeconds).ToString()}/{_maxUpdatetime} next update timer progress!&quot;); </span>
+                    <span class="s1">await Task</span><span class="s2">.</span><span class="s1">Delay</span><span class="s2">(</span><span class="s3">5000</span><span class="s2">);</span>
+                    <span class="s0">continue</span><span class="s2">;</span>
+                <span class="s2">}</span>
+
+                <span class="s1">_timeSinceLastUpdate </span><span class="s2">= </span><span class="s1">DateTime</span><span class="s2">.</span><span class="s1">Now</span><span class="s2">;</span>
+                <span class="s1">await ApiGetAllInfectedCountries</span><span class="s2">();</span>
+                <span class="s1">Logs</span><span class="s2">(</span><span class="s5">&quot;Updated all countries&quot;</span><span class="s2">, </span><span class="s3">1</span><span class="s2">);</span>
+                <span class="s1">Logs</span><span class="s2">(</span>
+                    <span class="s5">$&quot;[Worldwide-{</span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">Count </span><span class="s2">- </span><span class="s3">1</span><span class="s5">}] Total cases {</span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">[</span><span class="s1">_allIndex</span><span class="s2">].</span><span class="s1">Cases</span><span class="s2">.</span><span class="s1">Total</span><span class="s5">} {</span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">[</span><span class="s1">_allIndex</span><span class="s2">].</span><span class="s1">Cases</span><span class="s2">.</span><span class="s1">New</span><span class="s5">} new cases - total deaths {</span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">[</span><span class="s1">_allIndex</span><span class="s2">].</span><span class="s1">Deaths</span><span class="s2">.</span><span class="s1">Total</span><span class="s5">} {</span><span class="s1">_track</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">[</span><span class="s1">_allIndex</span><span class="s2">].</span><span class="s1">Deaths</span><span class="s2">.</span><span class="s1">New</span><span class="s5">} new deaths &quot;</span><span class="s2">);</span>
+                <span class="s4">/* foreach (var c in track.Response.Where(c =&gt; c.Cases.New != null)) 
+                        { 
+                            Logs($&quot;{c.Country} has {c.Cases.New} cases&quot;); 
+                        }*/</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">private static </span><span class="s1">async Task ApiGetAllInfectedCountries</span><span class="s2">()</span>
+        <span class="s2">{</span>
+            <span class="s1">await Task</span><span class="s2">.</span><span class="s1">Delay</span><span class="s2">(</span><span class="s3">500</span><span class="s2">);</span>
+            <span class="s1">_client </span><span class="s2">= </span><span class="s0">new </span><span class="s1">RestClient</span><span class="s2">(</span><span class="s5">&quot;https://covid-193.p.rapidapi.com/statistics&quot;</span><span class="s2">);</span>
+            <span class="s1">var request </span><span class="s2">= </span><span class="s0">new </span><span class="s1">RestRequest</span><span class="s2">(</span><span class="s1">Method</span><span class="s2">.</span><span class="s1">GET</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">AddHeader</span><span class="s2">(</span><span class="s5">&quot;x-rapidapi-host&quot;</span><span class="s2">, </span><span class="s5">&quot;covid-193.p.rapidapi.com&quot;</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">AddHeader</span><span class="s2">(</span><span class="s5">&quot;x-rapidapi-key&quot;</span><span class="s2">, </span><span class="s5">&quot;db654bb9eemshe5a8718dd1418ffp1b94abjsna0a6321ba60a&quot;</span><span class="s2">);</span>
+            <span class="s1">var response </span><span class="s2">= </span><span class="s1">_client</span><span class="s2">.</span><span class="s1">Execute</span><span class="s2">(</span><span class="s1">request</span><span class="s2">);</span>
+            <span class="s1">_track </span><span class="s2">= </span><span class="s1">JsonConvert</span><span class="s2">.</span><span class="s1">DeserializeObject</span><span class="s2">&lt;</span><span class="s1">jsonParse</span><span class="s2">.</span><span class="s1">Tracker</span><span class="s2">&gt;(</span><span class="s1">response</span><span class="s2">.</span><span class="s1">Content</span><span class="s2">);</span>
+            <span class="s1">File</span><span class="s2">.</span><span class="s1">WriteAllText</span><span class="s2">(</span><span class="s5">@&quot;./AllInfectedCountries.json&quot;</span><span class="s2">, </span><span class="s1">response</span><span class="s2">.</span><span class="s1">Content</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s0">private static void </span><span class="s1">Logs</span><span class="s2">(</span><span class="s0">string </span><span class="s1">text</span><span class="s2">, </span><span class="s0">int </span><span class="s1">code </span><span class="s2">= -</span><span class="s3">1</span><span class="s2">)</span>
+        <span class="s2">{</span>
+            <span class="s0">switch </span><span class="s2">(</span><span class="s1">code</span><span class="s2">)</span>
+            <span class="s2">{</span>
+                <span class="s0">case </span><span class="s3">0</span><span class="s1">:</span>
+                    <span class="s1">Console</span><span class="s2">.</span><span class="s1">ForegroundColor </span><span class="s2">= </span><span class="s1">ConsoleColor</span><span class="s2">.</span><span class="s1">Red</span><span class="s2">;</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+                <span class="s0">case </span><span class="s3">1</span><span class="s1">:</span>
+                    <span class="s1">Console</span><span class="s2">.</span><span class="s1">ForegroundColor </span><span class="s2">= </span><span class="s1">ConsoleColor</span><span class="s2">.</span><span class="s1">Green</span><span class="s2">;</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+                <span class="s0">default</span><span class="s1">:</span>
+                    <span class="s1">Console</span><span class="s2">.</span><span class="s1">ResetColor</span><span class="s2">();</span>
+                    <span class="s0">break</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s1">Console</span><span class="s2">.</span><span class="s1">WriteLine</span><span class="s2">(</span><span class="s5">$&quot;{</span><span class="s1">DateTime</span><span class="s2">.</span><span class="s1">Now:f</span><span class="s5">} - {</span><span class="s1">text</span><span class="s5">}&quot;</span><span class="s2">);</span>
+            <span class="s1">Console</span><span class="s2">.</span><span class="s1">ResetColor</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>
