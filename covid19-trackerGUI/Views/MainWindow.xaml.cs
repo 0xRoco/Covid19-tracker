@@ -21,7 +21,7 @@ namespace covid19_trackerGUI
         private readonly ObjectVm _vm = new ObjectVm();
         private jsonParse.Tracker _track = new jsonParse.Tracker();
         private int _allIndex;
-        private const int MaxUpdateTime = 60;
+        private const int MaxUpdateTime = 900;
 
         public MainWindow()
         {
