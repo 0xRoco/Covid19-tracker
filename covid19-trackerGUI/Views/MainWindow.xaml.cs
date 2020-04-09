@@ -21,7 +21,7 @@ namespace covid19_trackerGUI
         private readonly ObjectVm _vm = new ObjectVm();
         private jsonParse.Tracker _track = new jsonParse.Tracker();
         private int _allIndex;
-        private const int MaxUpdateTime = 10;
+        private const int MaxUpdateTime = 60;
 
         public MainWindow()
         {
@@ -31,15 +31,14 @@ namespace covid19_trackerGUI
             {
                 _vm.WorldwideVm = new BaseModel.Worldwide();
                 _vm.CountryVm = new List<BaseModel.Country>();
-                _vm.Vm = new Base();
+                _vm.Vm = new BaseModel();
             }
-
             PrepareData();
         }
 
         private void PrepareData()
         {
-             ReadFromRawJsonFile();
+            ReadFromRawJsonFile();
              _track.Response.Sort(((response, response1) => response1.Cases.Total.CompareTo(response.Cases.Total)));
              foreach (var c in _track.Response)
              {
@@ -70,8 +69,8 @@ namespace covid19_trackerGUI
                 if (!(ts.TotalSeconds >= MaxUpdateTime))
                 {
                     await Task.Delay(500); continue;}
-                ApiUpdateData();
-                UpdateData();
+
+                await ApiUpdateData();
                 _vm.Vm.UpDateTime = DateTime.Now;
             }
         }
@@ -89,7 +88,7 @@ namespace covid19_trackerGUI
             SelectedCountryInfo.DataContext = _vm.CountryVm[0];
         }
 
-        private void ReadFromRawJsonFile()
+        private async void ReadFromRawJsonFile()
         {
             while (true)
             {
@@ -104,7 +103,7 @@ namespace covid19_trackerGUI
                     }
                     else
                     {
-                        ApiUpdateData();
+                         await ApiUpdateData();
                         continue;
                     }
                 }
@@ -112,7 +111,7 @@ namespace covid19_trackerGUI
                 {
                     var fc = File.Create("AllInfectedCountries.json");
                     fc.Close();
-                    ApiUpdateData();
+                    await ApiUpdateData();
                     continue;
                 }
 
@@ -120,10 +119,10 @@ namespace covid19_trackerGUI
             }
         }
 
-        private void UpdateData()
+        private async Task UpdateData()
         {
+            await Task.Delay(500);
             _allIndex = _track.Response.FindIndex(x => x.Country == "All");
-            Updatetime.Text = DateTime.Now.AddHours(1).ToString("G");
             foreach (var c in _track.Response.Where(x => !x.Country.Equals("All") && !x.Country.Equals("World")))
             {
                 var tempindex = _vm.CountryVm.FindIndex(x => x.Name == c.Country);
@@ -136,7 +135,7 @@ namespace covid19_trackerGUI
                 _vm.CountryVm[tempindex].TotalDeaths = c.Deaths.Total;
             }
         }
-        private void ApiUpdateData()
+        private async Task ApiUpdateData()
         {
             _client = new RestClient("https://covid-193.p.rapidapi.com/statistics");
             var request = new RestRequest(Method.GET);
@@ -145,6 +144,7 @@ namespace covid19_trackerGUI
             var response = _client.Execute(request);
             _track = JsonConvert.DeserializeObject<jsonParse.Tracker>(response.Content);
             File.WriteAllText(@"./AllInfectedCountries.json", response.Content);
+            await UpdateData();
         }
 
         private void CList_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -155,12 +155,12 @@ namespace covid19_trackerGUI
             selectedCountry.DataContext = _vm.CountryVm[itemId];
             selectedCountryExtra.DataContext = _vm.CountryVm[itemId];
             SelectedCountryInfo.DataContext = _vm.CountryVm[itemId];
+            _vm.Vm.nextUpdateIn++;
         }
     }
-
     public class ObjectVm
     {
-        public Base Vm { get; set; }
+        public BaseModel Vm { get; set; }
         public List<BaseModel.Country> CountryVm { get; set; }
         public BaseModel.Worldwide WorldwideVm { get; set; }
     }

@@ -19,6 +19,17 @@ namespace covid19_trackerGUI.ViewModels
                 OnPropertyChanged(propertyName: nameof(UpDateTime));
             }
         }
+
+        public int nextUpdateIn
+        {
+            get => Model.nextUpdateIn;
+            set
+            {
+                Model.nextUpdateIn = value;
+                OnPropertyChanged();
+                OnPropertyChanged(propertyName:nameof(nextUpdateIn));
+            }
+        }
         public class Country : ViewModelBase<Base.Country>
         {
             public string Name
