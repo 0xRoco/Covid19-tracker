@@ -7,8 +7,18 @@ using Jeuxjeux20.Mvvm;
 
 namespace covid19_trackerGUI.ViewModels
 {
-    public class BaseModel
+    public class BaseModel : ViewModelBase<Base>
     {
+        public DateTime UpDateTime
+        {
+            get => Model.UpDateTime;
+            set
+            {
+                Model.UpDateTime = value;
+                OnPropertyChanged();
+                OnPropertyChanged(propertyName: nameof(UpDateTime));
+            }
+        }
         public class Country : ViewModelBase<Base.Country>
         {
             public string Name

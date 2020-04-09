@@ -8,6 +8,7 @@ namespace covid19_trackerGUI.ViewModels
 {
     public class Base
     {
+        public DateTime UpDateTime { get; set; }
         public class Country
         {
             public string name { get; set; }

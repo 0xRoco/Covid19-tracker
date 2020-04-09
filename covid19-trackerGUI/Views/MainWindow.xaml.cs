@@ -28,14 +28,16 @@ namespace covid19_trackerGUI
         private RestClient _client = new RestClient();
         private ObjectVm _vm = new ObjectVm();
         private jsonParse.Tracker track = new jsonParse.Tracker();
-        private DateTime _timeSinceLastUpdate = DateTime.Now;
         private int allIndex;
+        private int _maxUpdateTime = 10;
+
         public MainWindow()
         {
             InitializeComponent();
             DataContext = _vm ?? new ObjectVm();
             _vm.WorldwideVm = new BaseModel.Worldwide();
             _vm.CountryVm = new List<BaseModel.Country>();
+            _vm.vm = new Base();
             PrepareData();
         }
 
@@ -57,25 +59,51 @@ namespace covid19_trackerGUI
                 }else
                     _vm.CountryVm.Add(new BaseModel.Country() { Name = c.Country , NewCases = c.Cases.New , Active = c.Cases.Active, Critical = c.Cases.Critical, Recovered = c.Cases.Recovered, TotalCases = c.Cases.Total, NewDeaths = c.Deaths.New, TotalDeaths = c.Deaths.Total});
             }
+            BindData();
+            UpdateTimer();
+        }
+
+        //TODO: Fix UpdateTimer,UpdateData,ApiUpdateData to use TASK instead of method 
+        //BUG: DATA DOESN'T UPDATE IN UI AFTER BEING UPDATED HERE USING TASKS DOESN'T HELP EITHER
+
+        private async void UpdateTimer()
+        {
+            while (true)
+            {
+                var ts = DateTime.Now - _vm.vm.UpDateTime;
+                if (!(ts.TotalSeconds >= _maxUpdateTime))
+                {
+                    await Task.Delay(500); continue;}
+                ApiUpdateData();
+                UpdateData();
+                _vm.vm.UpDateTime = DateTime.Now;
+            }
+
+
+        }
+        private void BindData()
+        {
             cList.ItemsSource = _vm.CountryVm;
+            cListDeaths.ItemsSource = _vm.CountryVm;
+            cListRecoveries.ItemsSource = _vm.CountryVm;
+            TotalCases.DataContext = _vm.WorldwideVm;
+            TotalDeaths.DataContext = _vm.WorldwideVm;
+            TotalRecoveries.DataContext = _vm.WorldwideVm;
+            Updatetime.DataContext = _vm.vm;
+            selectedCountry.DataContext = _vm.CountryVm[0];
+            selectedCountryExtra.DataContext = _vm.CountryVm[0];
+            SelectedCountryInfo.DataContext = _vm.CountryVm[0];
         }
         private void ReadFromRawJsonFile()
         {
-            _timeSinceLastUpdate = File.GetLastWriteTime("AllInfectedCountries.json");
-            TimeSpan ts = DateTime.Now - _timeSinceLastUpdate;
-            if (ts.TotalSeconds >= 30)
-            {
-                  Task.Run(ApiUpdateData);
-            }
+            _vm.vm.UpDateTime = File.GetLastWriteTime("AllInfectedCountries.json");
             var jsonraw = File.ReadAllText("AllInfectedCountries.json");
             track = JsonConvert.DeserializeObject<jsonParse.Tracker>(jsonraw);
         }
-
-        private async Task UpdateData()
+        private void UpdateData()
         {
-            await Task.Delay(500);
             allIndex = track.Response.FindIndex(x => x.Country == "All");
-            foreach (var c in track.Response.Where(x => !x.Country.Equals("All")))
+            foreach (var c in track.Response.Where(x => !x.Country.Equals("All") && !x.Country.Equals("World")))
             {
                 var tempindex = _vm.CountryVm.FindIndex(x => x.Name == c.Country);
                 _vm.CountryVm[tempindex].NewCases = c.Cases.New;
@@ -87,9 +115,8 @@ namespace covid19_trackerGUI
                 _vm.CountryVm[tempindex].TotalDeaths = c.Deaths.Total;
             }
         }
-        private async Task ApiUpdateData()
+        private void ApiUpdateData()
         {
-            await Task.Delay(500);
             _client = new RestClient("https://covid-193.p.rapidapi.com/statistics");
             var request = new RestRequest(Method.GET);
             request.AddHeader("x-rapidapi-host", "covid-193.p.rapidapi.com");
@@ -97,12 +124,22 @@ namespace covid19_trackerGUI
             var response = _client.Execute(request);
             track = JsonConvert.DeserializeObject<jsonParse.Tracker>(response.Content);
             File.WriteAllText(@"./AllInfectedCountries.json", response.Content);
-            await Task.Run(UpdateData);
+        }
+
+        private void CList_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = ((ListView) sender).SelectedItem;
+            if (item == null) return;
+            var itemID = cList.Items.IndexOf(item);
+            selectedCountry.DataContext = _vm.CountryVm[itemID];
+            selectedCountryExtra.DataContext = _vm.CountryVm[itemID];
+            SelectedCountryInfo.DataContext = _vm.CountryVm[itemID];
         }
     }
 
     public class ObjectVm
     {
+        public Base vm { get; set; }
         public List<BaseModel.Country> CountryVm { get; set; }
         public BaseModel.Worldwide WorldwideVm { get; set; }
     }

@@ -8,18 +8,34 @@
         mc:Ignorable="d"
         Background="#424242"
         Foreground="#ecf0f1"
-        WindowState="Maximized"
+        WindowState="Normal"
+        WindowStyle="ToolWindow"
+        MaxHeight="450"
+        MaxWidth="900"
+        MinHeight="450"
+        MinWidth="900"
         WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="900">
     <Grid>
-        <Grid HorizontalAlignment="Left" VerticalAlignment="Center" Height="auto" Width="auto" Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="auto" Width="auto" Margin="5">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="4*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock  Text="{Binding wwTotalCases,StringFormat={}Total Cases: {0} }" Grid.Row="0" />
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1" >
-                <ListView Name="cList" Background="#212121" BorderThickness="0" >
+            <TextBlock x:Name="TotalCases" Grid.Row="0" Background="#212121" TextAlignment="Center" Margin="0 -5 0 5" TextWrapping="Wrap" VerticalAlignment="Top">
+                <Run Text="Total Confirmed" Foreground="#EEEEEE" FontSize="20"></Run>
+                <LineBreak/>
+                <Run Text="{Binding wwTotalCases}" Foreground="#D50000" FontWeight="Bold" FontSize="30"></Run>
+                <Run Text="{Binding wwNewCases}" Foreground="#D50000" FontWeight="Bold" FontSize="10"></Run>
+            </TextBlock>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1" VerticalAlignment="Center" >
+                <ListView Name="cList" Background="#212121" BorderThickness="0" PreviewMouseLeftButtonUp="CList_OnPreviewMouseLeftButtonDown">
                     <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextBlock>
@@ -30,6 +46,89 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            </ScrollViewer>
+            <TextBlock x:Name="Updatetime" Grid.Row="2" Background="#212121" TextAlignment="Center" Margin="0 5 0 0" VerticalAlignment="Bottom">
+                <Run Text="LAST UPDATE: "></Run>
+                <Run Text="{Binding UpDateTime,StringFormat=G}"></Run>
+            </TextBlock>
+        </Grid>
+        <Grid Grid.Column="1" HorizontalAlignment="Center" Height="auto" Width="auto" Margin="5" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="SelectedCountryInfo" Grid.Row="0" Background="#212121" TextAlignment="Center" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top">
+                <Run Text="Country Information" Foreground="#EEEEEE" FontSize="15"></Run>
+                <LineBreak/>
+                <Run Text="{Binding Name}" Foreground="#EEEEEE" FontSize="15"></Run>
+            </TextBlock>
+            <TextBlock x:Name="selectedCountry" TextAlignment="Center" Margin="10" Grid.Row="1" Background="#212121" TextWrapping="Wrap">
+                <Run Text="Total Confirmed" FontSize="20"></Run>
+                <LineBreak/>
+                <Run Text="{Binding TotalCases}" FontSize="40" FontWeight="Bold" Foreground="#D50000"></Run>
+                <Run Text="{Binding NewCases}" FontSize="25" FontWeight="Bold" Foreground="#D50000"></Run>
+                <LineBreak/>
+                <Run Text="Total Deaths" FontSize="20"></Run>
+                <LineBreak/>
+                <Run Text="{Binding TotalDeaths}" FontSize="40" FontWeight="Bold"></Run>
+                <Run Text="{Binding NewDeaths}" FontSize="25" FontWeight="Bold"></Run>
+                <LineBreak/>
+                <Run Text="Total Recovered" FontSize="20"></Run>
+                <LineBreak/>
+                <Run Text="{Binding Recovered}" FontSize="40" FontWeight="Bold" Foreground="#2ecc71"></Run>
+            </TextBlock>
+            <TextBlock x:Name="selectedCountryExtra" TextAlignment="Center" Margin="10" Grid.Row="2" Background="#212121">
+                <Run Text="Active: " FontSize="15"></Run>
+                <Run Text="{Binding Active}" Foreground="#e67e22" FontSize="20"></Run>
+                <Run Text=" Critical: " FontSize="15"></Run>
+                <Run Text="{Binding Critical}" Foreground="#D50000" FontSize="20"></Run>
+            </TextBlock>
+        </Grid>
+        <Grid Grid.Column="2" HorizontalAlignment="Center" Height="auto" Width="auto" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="TotalDeaths" Grid.Row="0" Grid.Column="0" Background="#212121" TextAlignment="Center" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top">
+                <Run Text="Total Deaths" Foreground="#EEEEEE" FontSize="15"></Run>
+                <LineBreak/>
+                <Run Text="{Binding wwTotalDeaths}" Foreground="#EEEEEE" FontWeight="Bold" FontSize="25"></Run>
+            </TextBlock>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="10">
+                <ListView Name="cListDeaths" Background="#212121" BorderThickness="0" PreviewMouseLeftButtonUp="CList_OnPreviewMouseLeftButtonDown">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding TotalDeaths}" Foreground="#EEEEEE" FontWeight="Bold"></Run>
+                                <Run Text=" "></Run>
+                                <Run Text="{Binding Name}" Foreground="#EEEEEE"></Run>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+            <TextBlock x:Name="TotalRecoveries" Grid.Row="0" Grid.Column="1" Background="#212121" TextAlignment="Center" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top">
+                <Run Text="Total Recovered" Foreground="#EEEEEE" FontSize="15"></Run>
+                <LineBreak/>
+                <Run Text="{Binding wwRecovered}" Foreground="#2ecc71" FontWeight="Bold" FontSize="25"></Run>
+            </TextBlock>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"  Margin="10">
+                <ListView Name="cListRecoveries" Background="#212121" BorderThickness="0" PreviewMouseLeftButtonUp="CList_OnPreviewMouseLeftButtonDown">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding Recovered}" Foreground="#2ecc71" FontWeight="Bold"></Run>
+                                <Run Text=" "></Run>
+                                <Run Text="{Binding Name}" Foreground="#EEEEEE"></Run>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </ScrollViewer>
         </Grid>
     </Grid>
