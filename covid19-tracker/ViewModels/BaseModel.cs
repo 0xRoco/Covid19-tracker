@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Jeuxjeux20.Mvvm;
 
-namespace covid19_trackerGUI.ViewModels
+namespace covid19_tracker.ViewModels
 {
     public class BaseModel : ViewModelBase<Base>
     {
@@ -16,7 +12,7 @@ namespace covid19_trackerGUI.ViewModels
             {
                 Model.UpDateTime = value;
                 OnPropertyChanged();
-                OnPropertyChanged(propertyName: nameof(UpDateTime));
+                OnPropertyChanged(nameof(UpDateTime));
             }
         }
 
@@ -27,9 +23,10 @@ namespace covid19_trackerGUI.ViewModels
             {
                 Model.nextUpdateIn = value;
                 OnPropertyChanged();
-                OnPropertyChanged(propertyName:nameof(nextUpdateIn));
+                OnPropertyChanged(nameof(nextUpdateIn));
             }
         }
+
         public class Country : ViewModelBase<Base.Country>
         {
             public string Name
@@ -39,9 +36,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.name = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(Name));
+                    OnPropertyChanged(nameof(Name));
                 }
             }
+
             public string NewCases
             {
                 get => Model.NewCases;
@@ -49,9 +47,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.NewCases = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(NewCases));
+                    OnPropertyChanged(nameof(NewCases));
                 }
             }
+
             public int Active
             {
                 get => Model.Active;
@@ -59,9 +58,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.Active = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(Active));
+                    OnPropertyChanged(nameof(Active));
                 }
             }
+
             public int Critical
             {
                 get => Model.Critical;
@@ -69,9 +69,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.Critical = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(Critical));
+                    OnPropertyChanged(nameof(Critical));
                 }
             }
+
             public int Recovered
             {
                 get => Model.Recovered;
@@ -79,9 +80,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.Recovered = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(Recovered));
+                    OnPropertyChanged(nameof(Recovered));
                 }
             }
+
             public int TotalCases
             {
                 get => Model.TotalCases;
@@ -89,9 +91,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.TotalCases = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(TotalCases));
+                    OnPropertyChanged(nameof(TotalCases));
                 }
             }
+
             public string NewDeaths
             {
                 get => Model.NewDeaths;
@@ -99,9 +102,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.NewDeaths = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(NewDeaths));
+                    OnPropertyChanged(nameof(NewDeaths));
                 }
             }
+
             public int TotalDeaths
             {
                 get => Model.TotalDeaths;
@@ -109,8 +113,7 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.TotalDeaths = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(TotalDeaths));
-
+                    OnPropertyChanged(nameof(TotalDeaths));
                 }
             }
         }
@@ -125,9 +128,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.wwNewCases = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(wwNewCases));
+                    OnPropertyChanged(nameof(wwNewCases));
                 }
             }
+
             public int wwActive
             {
                 get => Model.wwActive;
@@ -135,9 +139,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.wwActive = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(wwActive));
+                    OnPropertyChanged(nameof(wwActive));
                 }
             }
+
             public int wwCritical
             {
                 get => Model.wwCritical;
@@ -145,9 +150,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.wwCritical = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(wwCritical));
+                    OnPropertyChanged(nameof(wwCritical));
                 }
             }
+
             public int wwRecovered
             {
                 get => Model.wwRecovered;
@@ -155,9 +161,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.wwRecovered = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(wwRecovered));
+                    OnPropertyChanged(nameof(wwRecovered));
                 }
             }
+
             public int wwTotalCases
             {
                 get => Model.wwTotalCases;
@@ -165,9 +172,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.wwTotalCases = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(wwTotalCases));
+                    OnPropertyChanged(nameof(wwTotalCases));
                 }
             }
+
             public string wwNewDeaths
             {
                 get => Model.wwNewDeaths;
@@ -175,9 +183,10 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.wwNewDeaths = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(wwNewDeaths));
+                    OnPropertyChanged(nameof(wwNewDeaths));
                 }
             }
+
             public int wwTotalDeaths
             {
                 get => Model.wwTotalDeaths;
@@ -185,7 +194,7 @@ namespace covid19_trackerGUI.ViewModels
                 {
                     Model.wwTotalDeaths = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(propertyName: nameof(wwTotalDeaths));
+                    OnPropertyChanged(nameof(wwTotalDeaths));
                 }
             }
         }

@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace covid19_tracker
 {
-    public class jsonParse
+    internal class jsonParse
     {
-
         public class Cases
         {
             public string New { get; set; }
@@ -35,7 +31,7 @@ namespace covid19_tracker
 
         public class Tracker
         {
-            public List<Response> Response { get; set; } 
+            public List<Response> Response { get; set; }
         }
     }
 }

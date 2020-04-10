@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace covid19_trackerGUI.ViewModels
+namespace covid19_tracker.ViewModels
 {
     public class Base
     {
         public DateTime UpDateTime { get; set; }
         public int nextUpdateIn { get; set; }
+
         public class Country
         {
             public string name { get; set; }
@@ -24,13 +21,13 @@ namespace covid19_trackerGUI.ViewModels
 
         public class Worldwide
         {
-        public string wwNewCases { get; set; }
-        public int wwActive { get; set; }
-        public int wwCritical { get; set; }
-        public int wwRecovered { get; set; }
-        public int wwTotalCases { get; set; }
-        public string wwNewDeaths { get; set; }
-        public int wwTotalDeaths { get; set; }
+            public string wwNewCases { get; set; }
+            public int wwActive { get; set; }
+            public int wwCritical { get; set; }
+            public int wwRecovered { get; set; }
+            public int wwTotalCases { get; set; }
+            public string wwNewDeaths { get; set; }
+            public int wwTotalDeaths { get; set; }
         }
     }
 }

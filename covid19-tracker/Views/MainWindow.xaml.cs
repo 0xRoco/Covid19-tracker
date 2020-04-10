@@ -1,7 +1,4 @@
-﻿using covid19_trackerGUI.ViewModels;
-using Newtonsoft.Json;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,19 +6,22 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using covid19_tracker.ViewModels;
+using Newtonsoft.Json;
+using RestSharp;
 
-namespace covid19_trackerGUI
+namespace covid19_tracker
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private RestClient _client = new RestClient();
-        private readonly ObjectVm _vm = new ObjectVm();
-        private jsonParse.Tracker _track = new jsonParse.Tracker();
-        private int _allIndex;
         private const int MaxUpdateTime = 900;
+        private readonly ObjectVm _vm = new ObjectVm();
+        private int _allIndex;
+        private RestClient _client = new RestClient();
+        private jsonParse.Tracker _track = new jsonParse.Tracker();
 
         public MainWindow()
         {
@@ -33,29 +33,37 @@ namespace covid19_trackerGUI
                 _vm.CountryVm = new List<BaseModel.Country>();
                 _vm.Vm = new BaseModel();
             }
+
             PrepareData();
         }
 
         private void PrepareData()
         {
             ReadFromRawJsonFile();
-             _track.Response.Sort(((response, response1) => response1.Cases.Total.CompareTo(response.Cases.Total)));
-             foreach (var c in _track.Response)
-             {
-                 if (c.Country == "World" || c.Country=="All")
-                 {
-                     _vm.WorldwideVm.wwNewCases = c.Cases.New;
-                     _vm.WorldwideVm.wwActive = c.Cases.Active;
-                     _vm.WorldwideVm.wwCritical = c.Cases.Critical;
-                     _vm.WorldwideVm.wwRecovered = c.Cases.Recovered;
-                     _vm.WorldwideVm.wwTotalCases = c.Cases.Total;
-                     _vm.WorldwideVm.wwNewDeaths = c.Deaths.New;
-                     _vm.WorldwideVm.wwTotalDeaths = c.Deaths.Total;
-                 }else
-                     _vm.CountryVm.Add(new BaseModel.Country() { Name = c.Country , NewCases = c.Cases.New , Active = c.Cases.Active, Critical = c.Cases.Critical, Recovered = c.Cases.Recovered, TotalCases = c.Cases.Total, NewDeaths = c.Deaths.New, TotalDeaths = c.Deaths.Total});
-             }
-             BindData();
-             Task.Run(UpdateTimer);
+            _track.Response.Sort((response, response1) => response1.Cases.Total.CompareTo(response.Cases.Total));
+            foreach (var c in _track.Response)
+                if (c.Country == "World" || c.Country == "All")
+                {
+                    _vm.WorldwideVm.wwNewCases = c.Cases.New;
+                    _vm.WorldwideVm.wwActive = c.Cases.Active;
+                    _vm.WorldwideVm.wwCritical = c.Cases.Critical;
+                    _vm.WorldwideVm.wwRecovered = c.Cases.Recovered;
+                    _vm.WorldwideVm.wwTotalCases = c.Cases.Total;
+                    _vm.WorldwideVm.wwNewDeaths = c.Deaths.New;
+                    _vm.WorldwideVm.wwTotalDeaths = c.Deaths.Total;
+                }
+                else
+                {
+                    _vm.CountryVm.Add(new BaseModel.Country
+                    {
+                        Name = c.Country, NewCases = c.Cases.New, Active = c.Cases.Active, Critical = c.Cases.Critical,
+                        Recovered = c.Cases.Recovered, TotalCases = c.Cases.Total, NewDeaths = c.Deaths.New,
+                        TotalDeaths = c.Deaths.Total
+                    });
+                }
+
+            BindData();
+            Task.Run(UpdateTimer);
         }
 
         //TODO: Fix UpdateTimer,UpdateData,ApiUpdateData to use TASK instead of method 
@@ -68,12 +76,15 @@ namespace covid19_trackerGUI
                 var ts = DateTime.Now - _vm.Vm.UpDateTime;
                 if (!(ts.TotalSeconds >= MaxUpdateTime))
                 {
-                    await Task.Delay(500); continue;}
+                    await Task.Delay(500);
+                    continue;
+                }
 
                 await ApiUpdateData();
                 _vm.Vm.UpDateTime = DateTime.Now;
             }
         }
+
         private void BindData()
         {
             cList.ItemsSource = _vm.CountryVm;
@@ -99,15 +110,14 @@ namespace covid19_trackerGUI
                         _vm.Vm.UpDateTime = File.GetLastWriteTime("AllInfectedCountries.json");
                         var jsonraw = File.ReadAllText("AllInfectedCountries.json");
                         _track = JsonConvert.DeserializeObject<jsonParse.Tracker>(jsonraw);
-                       
                     }
                     else
                     {
-                         await ApiUpdateData();
+                        await ApiUpdateData();
                         continue;
                     }
                 }
-                else 
+                else
                 {
                     var fc = File.Create("AllInfectedCountries.json");
                     fc.Close();
@@ -135,6 +145,7 @@ namespace covid19_trackerGUI
                 _vm.CountryVm[tempindex].TotalDeaths = c.Deaths.Total;
             }
         }
+
         private async Task ApiUpdateData()
         {
             _client = new RestClient("https://covid-193.p.rapidapi.com/statistics");
@@ -158,6 +169,7 @@ namespace covid19_trackerGUI
             _vm.Vm.nextUpdateIn++;
         }
     }
+
     public class ObjectVm
     {
         public BaseModel Vm { get; set; }

@@ -1,0 +1,152 @@
+﻿<Window x:Class="covid19_tracker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Background="#424242"
+        Foreground="#ecf0f1"
+        WindowState="Normal"
+        WindowStyle="ToolWindow"
+        MaxHeight="600"
+        MaxWidth="900"
+        MinHeight="600"
+        MinWidth="900"
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="600" Width="900">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="auto" Width="auto"
+              Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="TotalCases" Grid.Row="0" Background="#212121" TextAlignment="Center" Margin="0 -5 0 5"
+                       TextWrapping="Wrap" VerticalAlignment="Top">
+                <Run Text="Total Confirmed" Foreground="#EEEEEE" FontSize="20" />
+                <LineBreak />
+                <Run Text="{Binding wwTotalCases}" Foreground="#D50000" FontWeight="Bold" FontSize="30" />
+                <Run Text="{Binding wwNewCases}" Foreground="#D50000" FontWeight="Bold" FontSize="10" />
+            </TextBlock>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1"
+                          VerticalAlignment="Center">
+                <ListView Name="cList" Background="#212121" BorderThickness="0"
+                          PreviewMouseLeftButtonUp="CList_OnPreviewMouseLeftButtonDown" SelectionMode="Single">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding TotalCases}" Foreground="#D50000" FontWeight="Bold" />
+                                <Run Text=" " />
+                                <Run Text="{Binding Name}" Foreground="#EEEEEE" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+            <TextBlock x:Name="Updatetime" Grid.Row="2" Background="#212121" FontSize="10" TextAlignment="Center"
+                       Margin="0 5 0 0" VerticalAlignment="Bottom">
+                <Run Text="LAST UPDATE: " />
+                <Run Text="{Binding UpDateTime,StringFormat=G}" />
+            </TextBlock>
+        </Grid>
+        <Grid Grid.Column="1" HorizontalAlignment="Center" Height="auto" Width="auto" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="SelectedCountryInfo" Grid.Row="0" Background="#212121" TextAlignment="Center"
+                       Margin="10" TextWrapping="Wrap" VerticalAlignment="Top">
+                <LineBreak />
+                <Run Text=" " />
+                <Run Text="{Binding Name,StringFormat={} {0}\'s information  }" Foreground="#EEEEEE" FontSize="15" />
+                <LineBreak />
+            </TextBlock>
+            <TextBlock x:Name="selectedCountry" TextAlignment="Center" Margin="10" Grid.Row="1" Background="#212121"
+                       TextWrapping="Wrap">
+                <Run Text="Total Confirmed" FontSize="20" />
+                <LineBreak />
+                <Run Text=" " />
+                <Run Text="{Binding TotalCases}" FontSize="40" FontWeight="Bold" Foreground="#D50000" />
+                <Run Text="{Binding NewCases}" FontSize="25" FontWeight="Bold" Foreground="#D50000" />
+                <Run Text=" " />
+                <LineBreak />
+                <Run Text="Total Deaths" FontSize="20" />
+                <LineBreak />
+                <Run Text=" " />
+                <Run Text="{Binding TotalDeaths}" FontSize="40" FontWeight="Bold" />
+                <Run Text="{Binding NewDeaths}" FontSize="25" FontWeight="Bold" />
+                <Run Text=" " />
+                <LineBreak />
+                <Run Text="Total Recovered" FontSize="20" />
+                <LineBreak />
+                <Run Text=" " />
+                <Run Text="{Binding Recovered}" FontSize="40" FontWeight="Bold" Foreground="#2ecc71" />
+                <Run Text=" " />
+            </TextBlock>
+            <TextBlock x:Name="selectedCountryExtra" TextAlignment="Center" Margin="10" Grid.Row="2"
+                       Background="#212121">
+                <Run Text="Active: " FontSize="15" />
+                <Run Text="{Binding Active}" Foreground="#e67e22" FontSize="20" />
+                <Run Text=" Critical: " FontSize="15" />
+                <Run Text="{Binding Critical}" Foreground="#D50000" FontSize="20" />
+            </TextBlock>
+        </Grid>
+        <Grid Grid.Column="2" HorizontalAlignment="Center" Height="auto" Width="auto" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="TotalDeaths" Grid.Row="0" Grid.Column="0" Background="#212121" TextAlignment="Center"
+                       Margin="5" TextWrapping="Wrap" VerticalAlignment="Top">
+                <Run Text="Total Deaths" Foreground="#EEEEEE" FontSize="15" />
+                <LineBreak />
+                <Run Text="{Binding wwTotalDeaths}" Foreground="#EEEEEE" FontWeight="Bold" FontSize="25" />
+            </TextBlock>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1"
+                          Grid.Column="0" VerticalAlignment="Center" Margin="10">
+                <ListView Name="cListDeaths" Background="#212121" BorderThickness="0" SelectionMode="Single">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding TotalDeaths}" Foreground="#EEEEEE" FontWeight="Bold" />
+                                <Run Text=" " />
+                                <Run Text="{Binding Name}" Foreground="#EEEEEE" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+            <TextBlock x:Name="TotalRecoveries" Grid.Row="0" Grid.Column="1" Background="#212121"
+                       TextAlignment="Center" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top">
+                <Run Text="Total Recovered" Foreground="#EEEEEE" FontSize="15" />
+                <LineBreak />
+                <Run Text="{Binding wwRecovered}" Foreground="#2ecc71" FontWeight="Bold" FontSize="25" />
+            </TextBlock>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1"
+                          Grid.Column="1" VerticalAlignment="Center" Margin="10">
+                <ListView Name="cListRecoveries" Background="#212121" BorderThickness="0" SelectionMode="Single">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding Recovered}" Foreground="#2ecc71" FontWeight="Bold" />
+                                <Run Text=" " />
+                                <Run Text="{Binding Name}" Foreground="#EEEEEE" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>
