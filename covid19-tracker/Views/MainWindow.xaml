@@ -263,7 +263,6 @@
                                 <Run Text="{Binding Title}" FontSize="15"  ></Run>
                                 <LineBreak/>
                                 <LineBreak/>
-                                <LineBreak/>
                                 <Run Text="{Binding Description}" FontSize="12"></Run>
                             </TextBlock>
                             <Grid Row="2" Height="50">
@@ -301,8 +300,6 @@
                             <TextBlock Grid.Row="1" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center">
                                 <Run Text="{Binding Title}" FontSize="15"  ></Run>
                                 <LineBreak/>
-                                <Run Text="{Binding PublishedAt}" FontSize="10"></Run>
-                                <LineBreak/>
                                 <LineBreak/>
                                 <Run Text="{Binding Description}" FontSize="12"></Run>
                             </TextBlock>
@@ -339,8 +336,6 @@
                             <TextBlock Grid.Row="1" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center">
                                 <Run Text="{Binding Title}" FontSize="15"  ></Run>
                                 <LineBreak/>
-                                <Run Text="{Binding PublishedAt}" FontSize="10"></Run>
-                                <LineBreak/>
                                 <LineBreak/>
                                 <Run Text="{Binding Description}" FontSize="12"></Run>
                             </TextBlock>
@@ -376,8 +371,6 @@
                             </materialDesign:Chip>
                             <TextBlock Grid.Row="1" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center">
                                 <Run Text="{Binding Title}" FontSize="15"  ></Run>
-                                <LineBreak/>
-                                <Run Text="{Binding PublishedAt}" FontSize="10"></Run>
                                 <LineBreak/>
                                 <LineBreak/>
                                 <Run Text="{Binding Description}" FontSize="12"></Run>

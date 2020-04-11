@@ -175,14 +175,11 @@ namespace covid19_tracker
                     Url = article.Url, UrlToImage = article.UrlToImage, PublishedAt = article.PublishedAt,
                     Content = article.Content, Source = article.Source.Name
                 });
-            if (Transitioner.SelectedIndex != 1)
-            {
-                var invokeAction = new Action(() => { NewsBadge.Badge = "NEW"; });
+            var invokeAction = new Action(() => { NewsBadge.Badge = "NEW"; });
                 await NewsBadge.Dispatcher.BeginInvoke(
                     invokeAction
                 );
             }
-        }
 
         private async void ReadTrackerJson()
         {
