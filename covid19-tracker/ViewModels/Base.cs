@@ -17,6 +17,7 @@ namespace covid19_tracker.ViewModels
             public int TotalCases { get; set; }
             public string NewDeaths { get; set; }
             public int TotalDeaths { get; set; }
+            public double deathRate { get; set; }
         }
 
         public class Worldwide
@@ -28,6 +29,7 @@ namespace covid19_tracker.ViewModels
             public int wwTotalCases { get; set; }
             public string wwNewDeaths { get; set; }
             public int wwTotalDeaths { get; set; }
+            public double wwDeathRate { get; set; }
         }
     }
 }

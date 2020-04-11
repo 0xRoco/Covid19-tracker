@@ -51,6 +51,8 @@ namespace covid19_tracker
                     _vm.WorldwideVm.wwTotalCases = c.Cases.Total;
                     _vm.WorldwideVm.wwNewDeaths = c.Deaths.New;
                     _vm.WorldwideVm.wwTotalDeaths = c.Deaths.Total;
+                    _vm.WorldwideVm.wwDeathRate =
+                        CalculateDeathRate(_vm.WorldwideVm.wwTotalDeaths, _vm.WorldwideVm.wwTotalCases);
                 }
                 else
                 {
@@ -58,16 +60,13 @@ namespace covid19_tracker
                     {
                         Name = c.Country, NewCases = c.Cases.New, Active = c.Cases.Active, Critical = c.Cases.Critical,
                         Recovered = c.Cases.Recovered, TotalCases = c.Cases.Total, NewDeaths = c.Deaths.New,
-                        TotalDeaths = c.Deaths.Total
+                        TotalDeaths = c.Deaths.Total, DeathRate = CalculateDeathRate(c.Deaths.Total, c.Cases.Total)
                     });
                 }
 
             BindData();
             Task.Run(UpdateTimer);
         }
-
-        //TODO: Fix UpdateTimer,UpdateData,ApiUpdateData to use TASK instead of method 
-        //BUG: DATA DOESN'T UPDATE IN UI AFTER BEING UPDATED HERE USING TASKS DOESN'T HELP EITHER
 
         private async Task UpdateTimer()
         {
@@ -87,16 +86,20 @@ namespace covid19_tracker
 
         private void BindData()
         {
-            cList.ItemsSource = _vm.CountryVm;
-            cListDeaths.ItemsSource = _vm.CountryVm;
-            cListRecoveries.ItemsSource = _vm.CountryVm;
+            TotalConfirmedList.ItemsSource = _vm.CountryVm;
+            TotalDeathsList.ItemsSource = _vm.CountryVm;
+            TotalRecoveredList.ItemsSource = _vm.CountryVm;
             TotalCases.DataContext = _vm.WorldwideVm;
             TotalDeaths.DataContext = _vm.WorldwideVm;
-            TotalRecoveries.DataContext = _vm.WorldwideVm;
-            Updatetime.DataContext = _vm.Vm;
-            selectedCountry.DataContext = _vm.CountryVm[0];
-            selectedCountryExtra.DataContext = _vm.CountryVm[0];
-            SelectedCountryInfo.DataContext = _vm.CountryVm[0];
+            TotalRecovered.DataContext = _vm.WorldwideVm;
+            //Updatetime.DataContext = _vm.Vm;
+            SelectedCountry.DataContext = _vm.CountryVm[0];
+            Worldwide.DataContext = _vm.WorldwideVm;
+        }
+
+        private static double CalculateDeathRate(int deaths, int confirmedCases)
+        {
+            return Math.Round(deaths / (double) confirmedCases * 100, 2);
         }
 
         private async void ReadFromRawJsonFile()
@@ -162,11 +165,44 @@ namespace covid19_tracker
         {
             var item = ((ListView) sender).SelectedItem;
             if (item == null) return;
-            var itemId = cList.Items.IndexOf(item);
-            selectedCountry.DataContext = _vm.CountryVm[itemId];
-            selectedCountryExtra.DataContext = _vm.CountryVm[itemId];
-            SelectedCountryInfo.DataContext = _vm.CountryVm[itemId];
-            _vm.Vm.nextUpdateIn++;
+            var itemId = TotalConfirmedList.Items.IndexOf(item);
+            SelectedCountry.DataContext = _vm.CountryVm[itemId];
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var index = int.Parse(((Button) e.Source).Uid);
+            Transitioner.SelectedIndex = index;
+            switch (index)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+            }
+        }
+
+        private void ButtonTop_OnClick(object sender, RoutedEventArgs e)
+        {
+            var index = int.Parse(((Button) e.Source).Uid);
+            switch (index)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    WindowState = WindowState.Minimized;
+                    break;
+                case 3:
+                    Close();
+                    break;
+            }
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 

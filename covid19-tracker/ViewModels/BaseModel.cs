@@ -116,6 +116,17 @@ namespace covid19_tracker.ViewModels
                     OnPropertyChanged(nameof(TotalDeaths));
                 }
             }
+
+            public double DeathRate
+            {
+                get => Model.deathRate;
+                set
+                {
+                    Model.deathRate = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(DeathRate));
+                }
+            }
         }
 
 
@@ -195,6 +206,17 @@ namespace covid19_tracker.ViewModels
                     Model.wwTotalDeaths = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(wwTotalDeaths));
+                }
+            }
+
+            public double wwDeathRate
+            {
+                get => Model.wwDeathRate;
+                set
+                {
+                    Model.wwDeathRate = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(wwDeathRate));
                 }
             }
         }
