@@ -1,29 +1,30 @@
 ﻿using System;
+using System.Windows.Controls.Primitives;
 using Jeuxjeux20.Mvvm;
 
 namespace covid19_tracker.ViewModels
 {
     public class BaseModel : ViewModelBase<Base>
     {
-        public DateTime UpDateTime
+        public DateTime UpdateTime
         {
-            get => Model.UpDateTime;
+            get => Model.UpdateTime;
             set
             {
-                Model.UpDateTime = value;
+                Model.UpdateTime = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(UpDateTime));
+                OnPropertyChanged(nameof(UpdateTime));
             }
         }
 
-        public int nextUpdateIn
+        public int NextUpdateIn
         {
-            get => Model.nextUpdateIn;
+            get => Model.NextUpdateIn;
             set
             {
-                Model.nextUpdateIn = value;
+                Model.NextUpdateIn = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(nextUpdateIn));
+                OnPropertyChanged(nameof(NextUpdateIn));
             }
         }
 
@@ -31,10 +32,10 @@ namespace covid19_tracker.ViewModels
         {
             public string Name
             {
-                get => Model.name;
+                get => Model.Name;
                 set
                 {
-                    Model.name = value;
+                    Model.Name = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(Name));
                 }
@@ -119,10 +120,10 @@ namespace covid19_tracker.ViewModels
 
             public double DeathRate
             {
-                get => Model.deathRate;
+                get => Model.DeathRate;
                 set
                 {
-                    Model.deathRate = value;
+                    Model.DeathRate = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(DeathRate));
                 }
@@ -217,6 +218,97 @@ namespace covid19_tracker.ViewModels
                     Model.DeathRate = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(DeathRate));
+                }
+            }
+        }
+
+        public class News : ViewModelBase<Base.News>
+        {
+            public string Author
+            {
+                get => Model.Author;
+                set
+                {
+                    Model.Author = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Author));
+                }
+            }
+
+            public string Title
+            {
+                get => Model.Title;
+                set
+                {
+                    Model.Title = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Title));
+                }
+            }
+
+            public string Description
+            {
+                get => Model.Description;
+                set
+                {
+                    Model.Description = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Description));
+                }
+            }
+
+            public string Url
+            {
+                get => Model.Url;
+                set
+                {
+                    Model.Url = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Url));
+                }
+            }
+
+            public string UrlToImage
+            {
+                get => Model.UrlToImage;
+                set
+                {
+                    Model.UrlToImage = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UrlToImage));
+                }
+            }
+
+            public DateTime PublishedAt
+            {
+                get => Model.PublishedAt;
+                set
+                {
+                    Model.PublishedAt = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(PublishedAt));
+                }
+            }
+
+            public string Content
+            {
+                get => Model.Content;
+                set
+                {
+                    Model.Content = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Content));
+                }
+            }
+
+            public string Source
+            {
+                get => Model.Source;
+                set
+                {
+                    Model.Source = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Source));
                 }
             }
         }

@@ -1,14 +1,16 @@
-﻿using System;
+﻿using covid19_tracker.ViewModels;
+using Newtonsoft.Json;
+using RestSharp;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using covid19_tracker.ViewModels;
-using Newtonsoft.Json;
-using RestSharp;
 
 namespace covid19_tracker
 {
@@ -22,24 +24,30 @@ namespace covid19_tracker
         private int _allIndex;
         private RestClient _client = new RestClient();
         private jsonParse.Tracker _track = new jsonParse.Tracker();
+        private jsonParse.News _news = new jsonParse.News();
+        private const string TrackerDataFile = "AllInfectedCountries.json";
+        private const string NewsDataFile = "NewsArticles.json";
 
+        private const string NewsCountry = "us";
+        private const string NewsLanguage = "en";
         public MainWindow()
         {
             InitializeComponent();
             DataContext = _vm ?? new ObjectVm();
             if (_vm != null)
             {
-                _vm.WorldwideVm = new BaseModel.Worldwide();
                 _vm.CountryVm = new List<BaseModel.Country>();
+                _vm.NewsVm = new List<BaseModel.News>();
+                _vm.WorldwideVm = new BaseModel.Worldwide();
                 _vm.Vm = new BaseModel();
             }
 
             PrepareData();
         }
 
-        private void PrepareData()
+        private async void PrepareData()
         {
-            ReadFromRawJsonFile();
+            ReadTrackerJson();
             _track.Response.Sort((response, response1) => response1.Cases.Total.CompareTo(response.Cases.Total));
             foreach (var c in _track.Response)
                 if (c.Country == "World" || c.Country == "All")
@@ -64,23 +72,32 @@ namespace covid19_tracker
                     });
                 }
 
+            await ReadNewsJson();
             BindData();
-            Task.Run(UpdateTimer);
+            await Task.Run(UpdateTimer);
         }
 
+        private bool IsTimeToUpdate()
+        {
+            var ts = DateTime.Now - _vm.Vm.UpdateTime;
+            if (!(ts.TotalSeconds >= MaxUpdateTime))
+            {
+                return false;
+            }
+            _vm.Vm.UpdateTime = DateTime.Now;
+            return true;
+        }
         private async Task UpdateTimer()
         {
             while (true)
             {
-                var ts = DateTime.Now - _vm.Vm.UpDateTime;
-                if (!(ts.TotalSeconds >= MaxUpdateTime))
+                if (!IsTimeToUpdate())
                 {
-                    await Task.Delay(500);
-                    continue;
-                }
+                    await Task.Delay(500); continue;
 
-                await ApiUpdateData();
-                _vm.Vm.UpDateTime = DateTime.Now;
+                }
+                await Task.Run(UpdateTrackerApiData);
+                await Task.Run(UpdateNewsApiData);
             }
         }
 
@@ -95,6 +112,11 @@ namespace covid19_tracker
             //Updatetime.DataContext = _vm.Vm;
             SelectedCountry.DataContext = _vm.CountryVm[0];
             Worldwide.DataContext = _vm.WorldwideVm;
+
+            card1.DataContext = _vm.NewsVm[0];
+            card2.DataContext = _vm.NewsVm[1];
+            card3.DataContext = _vm.NewsVm[2];
+            card4.DataContext = _vm.NewsVm[3];
         }
 
         private static double CalculateDeathRate(int deaths, int confirmedCases)
@@ -102,29 +124,89 @@ namespace covid19_tracker
             return Math.Round(deaths / (double) confirmedCases * 100, 2);
         }
 
-        private async void ReadFromRawJsonFile()
+        private async Task ReadNewsJson()
         {
             while (true)
             {
-                if (File.Exists("AllInfectedCountries.json"))
+                if (File.Exists(NewsDataFile))
                 {
-                    if (new FileInfo("AllInfectedCountries.json").Length != 0)
+                    if (new FileInfo(NewsDataFile).Length != 0)
                     {
-                        _vm.Vm.UpDateTime = File.GetLastWriteTime("AllInfectedCountries.json");
-                        var jsonraw = File.ReadAllText("AllInfectedCountries.json");
-                        _track = JsonConvert.DeserializeObject<jsonParse.Tracker>(jsonraw);
+                        var jsonraw = File.ReadAllText(NewsDataFile);
+                        _news = JsonConvert.DeserializeObject<jsonParse.News>(jsonraw);
+                        await UpdateNewsData();
                     }
                     else
                     {
-                        await ApiUpdateData();
+                        await UpdateNewsApiData();
                         continue;
                     }
                 }
                 else
                 {
-                    var fc = File.Create("AllInfectedCountries.json");
+                    var fc = File.Create(NewsDataFile);
                     fc.Close();
-                    await ApiUpdateData();
+                    await UpdateNewsApiData();
+                    continue;
+                }
+                break;
+            }
+        }
+
+
+        private async Task UpdateNewsApiData()
+        {
+            _client = new RestClient($"http://newsapi.org/v2/top-headlines?country={NewsCountry}&q=coronavirus&covid-19&language={NewsLanguage}&apiKey=3a0fa4d73e4349fc9847ae22da3ede58");
+            var request = new RestRequest(Method.GET);
+            var response = _client.Execute(request);
+            _news = JsonConvert.DeserializeObject<jsonParse.News>(response.Content);
+            File.WriteAllText(NewsDataFile, response.Content);
+            await UpdateNewsData();
+        }
+
+        private async Task UpdateNewsData()
+        {
+            await Task.Delay(500);
+            _vm.NewsVm.Clear();
+            foreach (var article in _news.Articles)
+                _vm.NewsVm.Add(new BaseModel.News
+                {
+                    Author = article.Author, Title = article.Title, Description = article.Description,
+                    Url = article.Url, UrlToImage = article.UrlToImage, PublishedAt = article.PublishedAt,
+                    Content = article.Content, Source = article.Source.Name
+                });
+            if (Transitioner.SelectedIndex != 1)
+            {
+                var invokeAction = new Action(() => { NewsBadge.Badge = "NEW"; });
+                await NewsBadge.Dispatcher.BeginInvoke(
+                    invokeAction
+                );
+            }
+        }
+
+        private async void ReadTrackerJson()
+        {
+            while (true)
+            {
+                if (File.Exists(TrackerDataFile))
+                {
+                    if (new FileInfo(TrackerDataFile).Length != 0)
+                    {
+                        _vm.Vm.UpdateTime = File.GetLastWriteTime(TrackerDataFile);
+                        var jsonraw = File.ReadAllText(TrackerDataFile);
+                        _track = JsonConvert.DeserializeObject<jsonParse.Tracker>(jsonraw);
+                    }
+                    else
+                    {
+                        await UpdateTrackerApiData();
+                        continue;
+                    }
+                }
+                else
+                {
+                    var fc = File.Create(TrackerDataFile);
+                    fc.Close();
+                    await UpdateTrackerApiData();
                     continue;
                 }
 
@@ -132,7 +214,7 @@ namespace covid19_tracker
             }
         }
 
-        private async Task UpdateData()
+        private async Task UpdateTrackerData()
         {
             await Task.Delay(500);
             _allIndex = _track.Response.FindIndex(x => x.Country == "All");
@@ -157,7 +239,7 @@ namespace covid19_tracker
             _vm.WorldwideVm.DeathRate = CalculateDeathRate(_vm.WorldwideVm.TotalDeaths, _vm.WorldwideVm.TotalCases);
         }
 
-        private async Task ApiUpdateData()
+        private async Task UpdateTrackerApiData()
         {
             _client = new RestClient("https://covid-193.p.rapidapi.com/statistics");
             var request = new RestRequest(Method.GET);
@@ -165,8 +247,8 @@ namespace covid19_tracker
             request.AddHeader("x-rapidapi-key", "db654bb9eemshe5a8718dd1418ffp1b94abjsna0a6321ba60a");
             var response = _client.Execute(request);
             _track = JsonConvert.DeserializeObject<jsonParse.Tracker>(response.Content);
-            File.WriteAllText(@"./AllInfectedCountries.json", response.Content);
-            await UpdateData();
+            File.WriteAllText(TrackerDataFile, response.Content);
+            await UpdateTrackerData();
         }
 
         private void CList_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -186,6 +268,7 @@ namespace covid19_tracker
                 case 0:
                     break;
                 case 1:
+                    NewsBadge.Badge = "";
                     break;
             }
         }
@@ -212,6 +295,26 @@ namespace covid19_tracker
         {
             DragMove();
         }
+
+        private void ShareButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var index = int.Parse(((Button) e.Source).Uid);
+            switch (index)
+            {
+                case 0:
+                    Process.Start(_vm.NewsVm[index].Url);
+                    break;
+                case 1:
+                    Process.Start(_vm.NewsVm[index].Url);
+                    break;
+                case 2:
+                    Process.Start(_vm.NewsVm[index].Url);
+                    break;
+                case 3:
+                    Process.Start(_vm.NewsVm[index].Url);
+                    break;
+            }
+        }
     }
 
     public class ObjectVm
@@ -219,5 +322,6 @@ namespace covid19_tracker
         public BaseModel Vm { get; set; }
         public List<BaseModel.Country> CountryVm { get; set; }
         public BaseModel.Worldwide WorldwideVm { get; set; }
+        public List<BaseModel.News> NewsVm { get; set; }
     }
 }
