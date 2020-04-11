@@ -77,9 +77,9 @@
                         <TextBlock x:Name="TotalCases" Grid.Row="0" TextAlignment="Center">
                             <Run Text=" Total Confirmed " FontSize="15" Foreground="#f1f2f6" />
                             <LineBreak />
-                            <Run Text="{Binding wwTotalCases,StringFormat={} {0:n0}}" FontSize="25"
+                            <Run Text="{Binding TotalCases,StringFormat={} {0:n0}}" FontSize="25"
                                  Foreground="#ff4757" FontWeight="DemiBold" />
-                            <Run Text="{Binding wwNewCases,StringFormat={}{0:n0} }" FontSize="15" Foreground="#ff4757"
+                            <Run Text="{Binding NewCases,StringFormat={}{0:n0} }" FontSize="15" Foreground="#ff4757"
                                  FontWeight="DemiBold" />
                         </TextBlock>
                         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
@@ -145,32 +145,32 @@
                                 <Run Text="Worldwide statistics" Foreground="#EEEEEE" FontSize="20" />
                                 <LineBreak />
                                 <Run Text="Total Confirmed:" Foreground="#EEEEEE" FontSize="15" />
-                                <Run Text="{Binding wwTotalCases,StringFormat={} {0:n0}}" Foreground="#ff4757"
+                                <Run Text="{Binding TotalCases,StringFormat={} {0:n0}}" Foreground="#ff4757"
                                      FontSize="20" FontWeight="Bold" />
-                                <Run Text="{Binding wwNewCases,StringFormat={} {0:n0}}" Foreground="#ff4757"
+                                <Run Text="{Binding NewCases,StringFormat={} {0:n0}}" Foreground="#ff4757"
                                      FontSize="12" />
                                 <LineBreak />
                                 <Run Text="Total Deaths:" Foreground="#EEEEEE" FontSize="15" />
-                                <Run Text="{Binding wwTotalDeaths,StringFormat={} {0:n0}}" Foreground="#EEEEEE"
+                                <Run Text="{Binding TotalDeaths,StringFormat={} {0:n0}}" Foreground="#EEEEEE"
                                      FontSize="20" FontWeight="Bold" />
-                                <Run Text="{Binding wwNewDeaths,StringFormat={} {0:n0}}" Foreground="#EEEEEE"
+                                <Run Text="{Binding NewDeaths,StringFormat={} {0:n0}}" Foreground="#EEEEEE"
                                      FontSize="12" />
                                 <LineBreak />
                                 <Run Text="Total Recovered:" Foreground="#EEEEEE" FontSize="15" />
-                                <Run Text="{Binding wwRecovered,StringFormat={} {0:n0}}" Foreground="#2ed573"
+                                <Run Text="{Binding Recovered,StringFormat={} {0:n0}}" Foreground="#2ed573"
                                      FontSize="20" FontWeight="Bold" />
                                 <LineBreak />
                                 <Run Text="Active:" Foreground="#EEEEEE" FontSize="15" />
-                                <Run Text="{Binding wwActive,StringFormat={} {0:n0}}" Foreground="#ffa502"
+                                <Run Text="{Binding Active,StringFormat={} {0:n0}}" Foreground="#ffa502"
                                      FontSize="20" FontWeight="Bold" />
                                 <LineBreak />
                                 <Run Text="Critical:" Foreground="#EEEEEE" FontSize="15" />
-                                <Run Text="{Binding wwCritical,StringFormat={} {0:n0}}" Foreground="#ff4757"
+                                <Run Text="{Binding Critical,StringFormat={} {0:n0}}" Foreground="#ff4757"
                                      FontSize="20" FontWeight="Bold" />
                                 <LineBreak />
                                 <LineBreak />
                                 <Run Text="Mortality rate:" Foreground="#EEEEEE" FontSize="15" />
-                                <Run Text="{Binding wwDeathRate,StringFormat={} {0}%}" Foreground="#ff4757"
+                                <Run Text="{Binding DeathRate,StringFormat={} {0}%}" Foreground="#ff4757"
                                      FontSize="20" FontWeight="Bold" />
                                 <LineBreak />
                             </TextBlock>
@@ -184,9 +184,9 @@
                         <TextBlock x:Name="TotalDeaths" Grid.Row="0" TextAlignment="Center">
                             <Run Text="Total Deaths" FontSize="15" Foreground="#f1f2f6" />
                             <LineBreak />
-                            <Run Text="{Binding wwTotalDeaths,StringFormat={} {0:n0} }" FontSize="25"
+                            <Run Text="{Binding TotalDeaths,StringFormat={} {0:n0} }" FontSize="25"
                                  Foreground="#f1f2f6" FontWeight="DemiBold" />
-                            <Run Text="{Binding wwNewDeaths,StringFormat={} {0:n0}}" FontSize="15" Foreground="#f1f2f6"
+                            <Run Text="{Binding NewDeaths,StringFormat={} {0:n0}}" FontSize="15" Foreground="#f1f2f6"
                                  FontWeight="DemiBold" />
                         </TextBlock>
                         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
@@ -214,7 +214,7 @@
                         <TextBlock x:Name="TotalRecovered" Grid.Row="0" TextAlignment="Center">
                             <Run Text="Total Recovered" FontSize="15" Foreground="#f1f2f6" />
                             <LineBreak />
-                            <Run Text="{Binding wwRecovered,StringFormat={} {0:n0}}" FontSize="25" Foreground="#2ed573"
+                            <Run Text="{Binding Recovered,StringFormat={} {0:n0}}" FontSize="25" Foreground="#2ed573"
                                  FontWeight="DemiBold" />
                             <Run Text="" FontSize="15" Foreground="#2ed573" FontWeight="DemiBold" />
                         </TextBlock>
@@ -237,7 +237,7 @@
                     </Grid>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="NEWSPAGEPEOPLEAREDYINGHELP" />
+                    <TextBlock Text="TEMP" />
                 </Grid>
             </materialDesign:Transitioner>
         </Grid>

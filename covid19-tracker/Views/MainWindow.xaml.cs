@@ -44,15 +44,15 @@ namespace covid19_tracker
             foreach (var c in _track.Response)
                 if (c.Country == "World" || c.Country == "All")
                 {
-                    _vm.WorldwideVm.wwNewCases = c.Cases.New;
-                    _vm.WorldwideVm.wwActive = c.Cases.Active;
-                    _vm.WorldwideVm.wwCritical = c.Cases.Critical;
-                    _vm.WorldwideVm.wwRecovered = c.Cases.Recovered;
-                    _vm.WorldwideVm.wwTotalCases = c.Cases.Total;
-                    _vm.WorldwideVm.wwNewDeaths = c.Deaths.New;
-                    _vm.WorldwideVm.wwTotalDeaths = c.Deaths.Total;
-                    _vm.WorldwideVm.wwDeathRate =
-                        CalculateDeathRate(_vm.WorldwideVm.wwTotalDeaths, _vm.WorldwideVm.wwTotalCases);
+                    _vm.WorldwideVm.NewCases = c.Cases.New;
+                    _vm.WorldwideVm.Active = c.Cases.Active;
+                    _vm.WorldwideVm.Critical = c.Cases.Critical;
+                    _vm.WorldwideVm.Recovered = c.Cases.Recovered;
+                    _vm.WorldwideVm.TotalCases = c.Cases.Total;
+                    _vm.WorldwideVm.NewDeaths = c.Deaths.New;
+                    _vm.WorldwideVm.TotalDeaths = c.Deaths.Total;
+                    _vm.WorldwideVm.DeathRate =
+                        CalculateDeathRate(_vm.WorldwideVm.TotalDeaths, _vm.WorldwideVm.TotalCases);
                 }
                 else
                 {
@@ -147,6 +147,14 @@ namespace covid19_tracker
                 _vm.CountryVm[tempindex].NewDeaths = c.Deaths.New;
                 _vm.CountryVm[tempindex].TotalDeaths = c.Deaths.Total;
             }
+            _vm.WorldwideVm.TotalCases = _track.Response[_allIndex].Cases.Total;
+            _vm.WorldwideVm.Active = _track.Response[_allIndex].Cases.Active;
+            _vm.WorldwideVm.Critical = _track.Response[_allIndex].Cases.Critical;
+            _vm.WorldwideVm.Recovered = _track.Response[_allIndex].Cases.Recovered;
+            _vm.WorldwideVm.NewCases = _track.Response[_allIndex].Cases.New;
+            _vm.WorldwideVm.NewDeaths = _track.Response[_allIndex].Deaths.New;
+            _vm.WorldwideVm.TotalDeaths = _track.Response[_allIndex].Deaths.Total;
+            _vm.WorldwideVm.DeathRate = CalculateDeathRate(_vm.WorldwideVm.TotalDeaths, _vm.WorldwideVm.TotalCases);
         }
 
         private async Task ApiUpdateData()

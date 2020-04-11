@@ -132,91 +132,91 @@ namespace covid19_tracker.ViewModels
 
         public class Worldwide : ViewModelBase<Base.Worldwide>
         {
-            public string wwNewCases
+            public string NewCases
             {
-                get => Model.wwNewCases;
+                get => Model.NewCases;
                 set
                 {
-                    Model.wwNewCases = value;
+                    Model.NewCases = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(wwNewCases));
+                    OnPropertyChanged(nameof(NewCases));
                 }
             }
 
-            public int wwActive
+            public int Active
             {
-                get => Model.wwActive;
+                get => Model.Active;
                 set
                 {
-                    Model.wwActive = value;
+                    Model.Active = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(wwActive));
+                    OnPropertyChanged(nameof(Active));
                 }
             }
 
-            public int wwCritical
+            public int Critical
             {
-                get => Model.wwCritical;
+                get => Model.Critical;
                 set
                 {
-                    Model.wwCritical = value;
+                    Model.Critical = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(wwCritical));
+                    OnPropertyChanged(nameof(Critical));
                 }
             }
 
-            public int wwRecovered
+            public int Recovered
             {
-                get => Model.wwRecovered;
+                get => Model.Recovered;
                 set
                 {
-                    Model.wwRecovered = value;
+                    Model.Recovered = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(wwRecovered));
+                    OnPropertyChanged(nameof(Recovered));
                 }
             }
 
-            public int wwTotalCases
+            public int TotalCases
             {
-                get => Model.wwTotalCases;
+                get => Model.TotalCases;
                 set
                 {
-                    Model.wwTotalCases = value;
+                    Model.TotalCases = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(wwTotalCases));
+                    OnPropertyChanged(nameof(TotalCases));
                 }
             }
 
-            public string wwNewDeaths
+            public string NewDeaths
             {
-                get => Model.wwNewDeaths;
+                get => Model.NewDeaths;
                 set
                 {
-                    Model.wwNewDeaths = value;
+                    Model.NewDeaths = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(wwNewDeaths));
+                    OnPropertyChanged(nameof(NewDeaths));
                 }
             }
 
-            public int wwTotalDeaths
+            public int TotalDeaths
             {
-                get => Model.wwTotalDeaths;
+                get => Model.TotalDeaths;
                 set
                 {
-                    Model.wwTotalDeaths = value;
+                    Model.TotalDeaths = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(wwTotalDeaths));
+                    OnPropertyChanged(nameof(TotalDeaths));
                 }
             }
 
-            public double wwDeathRate
+            public double DeathRate
             {
-                get => Model.wwDeathRate;
+                get => Model.DeathRate;
                 set
                 {
-                    Model.wwDeathRate = value;
+                    Model.DeathRate = value;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(wwDeathRate));
+                    OnPropertyChanged(nameof(DeathRate));
                 }
             }
         }
