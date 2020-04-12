@@ -117,6 +117,14 @@ namespace covid19_tracker
             card2.DataContext = _vm.NewsVm[1];
             card3.DataContext = _vm.NewsVm[2];
             card4.DataContext = _vm.NewsVm[3];
+            card5.DataContext = _vm.NewsVm[4];
+            card6.DataContext = _vm.NewsVm[5];
+            card7.DataContext = _vm.NewsVm[6];
+            card8.DataContext = _vm.NewsVm[7];
+            card9.DataContext = _vm.NewsVm[8];
+            card10.DataContext = _vm.NewsVm[9];
+            card11.DataContext = _vm.NewsVm[10];
+            card12.DataContext = _vm.NewsVm[11];
         }
 
         private static double CalculateDeathRate(int deaths, int confirmedCases)
@@ -156,7 +164,7 @@ namespace covid19_tracker
 
         private async Task UpdateNewsApiData()
         {
-            _client = new RestClient($"http://newsapi.org/v2/top-headlines?country={NewsCountry}&q=coronavirus&covid-19&language={NewsLanguage}&apiKey=3a0fa4d73e4349fc9847ae22da3ede58");
+            _client = new RestClient($"http://newsapi.org/v2/top-headlines?country={NewsCountry}&q=coronavirus&covid19&language={NewsLanguage}&apiKey=3a0fa4d73e4349fc9847ae22da3ede58");
             var request = new RestRequest(Method.GET);
             var response = _client.Execute(request);
             _news = JsonConvert.DeserializeObject<jsonParse.News>(response.Content);
@@ -172,7 +180,7 @@ namespace covid19_tracker
                 _vm.NewsVm.Add(new BaseModel.News
                 {
                     Author = article.Author, Title = article.Title, Description = article.Description,
-                    Url = article.Url, UrlToImage = article.UrlToImage, PublishedAt = article.PublishedAt,
+                    Url = article.Url, UrlToImage = article.UrlToImage, PublishedAt = article.PublishedAt.ToLocalTime(),
                     Content = article.Content, Source = article.Source.Name
                 });
             var invokeAction = new Action(() => { NewsBadge.Badge = "NEW"; });

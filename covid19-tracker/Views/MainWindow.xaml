@@ -243,6 +243,8 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -250,33 +252,27 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <materialDesign:Card Grid.Row="0" Grid.Column="0" Width="250" Height="450" Background="#2f3542">
+                    <materialDesign:Card Grid.Row="0" Grid.Column="0" Width="250" Height="150" Background="#2f3542">
                         <Grid x:Name="card1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Image Grid.Row="0"  Source="{Binding UrlToImage}" Stretch="Fill"/>
-                            <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/>
-                            <TextBlock Grid.Row="1" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center">
-                                <Run Text="{Binding Title}" FontSize="15"  ></Run>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
                                 <LineBreak/>
-                                <LineBreak/>
-                                <Run Text="{Binding Description}" FontSize="12"></Run>
                             </TextBlock>
-                            <Grid Row="2" Height="50">
+                            <Grid Row="1" Height="50">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center">
-                                        <Run Text="{Binding Author}" FontSize="12"></Run>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
+                                        <Run Text="Powered by Newsapi.org" FontSize="10"></Run>
                                         <LineBreak/>
                                         <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
-                                        <LineBreak/>
-                                        <Run Text="Powered by NewsAPI.org" Foreground="#f1f2f6"></Run>
                                     </TextBlock>
                                     <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
                                         <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
@@ -287,35 +283,28 @@
                             </Grid>
                         </Grid>
                     </materialDesign:Card>
-                    <materialDesign:Card Grid.Row="0" Grid.Column="1" Width="250" Height="450"  Background="#2f3542">
+                    <materialDesign:Card Grid.Row="0" Grid.Column="1" Width="250" Height="150"  Background="#2f3542">
                         <Grid x:Name="card2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Image Grid.Row="0"  Source="{Binding UrlToImage}" Stretch="Fill"/>
-                            <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom"  Background="#2f3542">
-                            </materialDesign:Chip>
-                            <TextBlock Grid.Row="1" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center">
-                                <Run Text="{Binding Title}" FontSize="15"  ></Run>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
                                 <LineBreak/>
-                                <LineBreak/>
-                                <Run Text="{Binding Description}" FontSize="12"></Run>
                             </TextBlock>
-                            <Grid Row="2" Height="50">
+                            <Grid Row="1" Height="50">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center">
-                                        <Run Text="{Binding Author}" FontSize="12"></Run>
-                                        <LineBreak/>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
                                         <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
                                     </TextBlock>
                                     <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
-                                        <Button Uid="1" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
                                             <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
                                         </Button>
                                     </StackPanel>
@@ -323,35 +312,28 @@
                             </Grid>
                         </Grid>
                     </materialDesign:Card>
-                    <materialDesign:Card Grid.Row="0" Grid.Column="2" Width="250" Height="450"  Background="#2f3542">
+                    <materialDesign:Card Grid.Row="0" Grid.Column="2" Width="250" Height="150"  Background="#2f3542">
                         <Grid x:Name="card3">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Image Grid.Row="0"  Source="{Binding UrlToImage}" Stretch="Fill"/>
-                            <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom"  Background="#2f3542">
-                            </materialDesign:Chip>
-                            <TextBlock Grid.Row="1" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center">
-                                <Run Text="{Binding Title}" FontSize="15"  ></Run>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
                                 <LineBreak/>
-                                <LineBreak/>
-                                <Run Text="{Binding Description}" FontSize="12"></Run>
                             </TextBlock>
-                            <Grid Row="2" Height="50">
+                            <Grid Row="1" Height="50">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center">
-                                        <Run Text="{Binding Author}" FontSize="12"></Run>
-                                        <LineBreak/>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
                                         <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
                                     </TextBlock>
                                     <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
-                                        <Button Uid="2" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
                                             <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
                                         </Button>
                                     </StackPanel>
@@ -359,35 +341,28 @@
                             </Grid>
                         </Grid>
                     </materialDesign:Card>
-                    <materialDesign:Card Grid.Row="0" Grid.Column="3" Width="250" Height="450"  Background="#2f3542">
+                    <materialDesign:Card Grid.Row="0" Grid.Column="3" Width="250" Height="150"  Background="#2f3542">
                         <Grid x:Name="card4">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Image Grid.Row="0"  Source="{Binding UrlToImage}" Stretch="Fill"/>
-                            <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom"  Background="#2f3542">
-                            </materialDesign:Chip>
-                            <TextBlock Grid.Row="1" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center">
-                                <Run Text="{Binding Title}" FontSize="15"  ></Run>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
                                 <LineBreak/>
-                                <LineBreak/>
-                                <Run Text="{Binding Description}" FontSize="12"></Run>
                             </TextBlock>
-                            <Grid Row="2" Height="50">
+                            <Grid Row="1" Height="50">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center">
-                                        <Run Text="{Binding Author}" FontSize="12"></Run>
-                                        <LineBreak/>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
                                         <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
                                     </TextBlock>
                                     <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
-                                        <Button Uid="3" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
                                             <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
                                         </Button>
                                     </StackPanel>
@@ -395,9 +370,238 @@
                             </Grid>
                         </Grid>
                     </materialDesign:Card>
-
-
-
+                    <materialDesign:Card Grid.Row="1" Grid.Column="0" Width="250" Height="150"  Background="#2f3542">
+                        <Grid x:Name="card5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
+                                <LineBreak/>
+                            </TextBlock>
+                            <Grid Row="1" Height="50">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
+                                        <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
+                                    </TextBlock>
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                            <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:Card>
+                    <materialDesign:Card Grid.Row="1" Grid.Column="1" Width="250" Height="150"  Background="#2f3542">
+                        <Grid x:Name="card6">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
+                                <LineBreak/>
+                            </TextBlock>
+                            <Grid Row="1" Height="50">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
+                                        <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
+                                    </TextBlock>
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                            <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:Card>
+                    <materialDesign:Card Grid.Row="1" Grid.Column="2" Width="250" Height="150"  Background="#2f3542">
+                        <Grid x:Name="card7">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
+                                <LineBreak/>
+                            </TextBlock>
+                            <Grid Row="1" Height="50">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
+                                        <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
+                                    </TextBlock>
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                            <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:Card>
+                    <materialDesign:Card Grid.Row="1" Grid.Column="3" Width="250" Height="150"  Background="#2f3542">
+                        <Grid x:Name="card8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
+                                <LineBreak/>
+                            </TextBlock>
+                            <Grid Row="1" Height="50">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
+                                        <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
+                                    </TextBlock>
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                            <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:Card>
+                    <materialDesign:Card Grid.Row="2" Grid.Column="0" Width="250" Height="150"  Background="#2f3542">
+                        <Grid x:Name="card9">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
+                                <LineBreak/>
+                            </TextBlock>
+                            <Grid Row="1" Height="50">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
+                                        <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
+                                    </TextBlock>
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                            <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:Card>
+                    <materialDesign:Card Grid.Row="2" Grid.Column="1" Width="250" Height="150"  Background="#2f3542">
+                        <Grid x:Name="card10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
+                                <LineBreak/>
+                            </TextBlock>
+                            <Grid Row="1" Height="50">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
+                                        <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
+                                    </TextBlock>
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                            <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:Card>
+                    <materialDesign:Card Grid.Row="2" Grid.Column="2" Width="250" Height="150"  Background="#2f3542">
+                        <Grid x:Name="card11">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
+                                <LineBreak/>
+                            </TextBlock>
+                            <Grid Row="1" Height="50">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
+                                        <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
+                                    </TextBlock>
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                            <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:Card>
+                    <materialDesign:Card Grid.Row="2" Grid.Column="3" Width="250" Height="150"  Background="#2f3542">
+                        <Grid x:Name="card12">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <!-- <materialDesign:Chip Grid.Row="0" Content="{Binding Source}" IsEnabled="False" VerticalAlignment="Bottom" Background="#2f3542"/> -->
+                            <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Title}" FontSize="12"  ></Run>
+                                <LineBreak/>
+                            </TextBlock>
+                            <Grid Row="1" Height="50">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock  Grid.Column="0" Foreground="#f1f2f6" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow">
+                                        <Run Text="{Binding PublishedAt}" FontSize="12"></Run>
+                                    </TextBlock>
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button Uid="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="ShareButton_OnClick">
+                                            <materialDesign:PackIcon Kind="Share" Width="25" Height="25" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:Card>
                 </Grid>
             </materialDesign:Transitioner>
         </Grid>
