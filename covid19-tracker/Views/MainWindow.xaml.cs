@@ -48,6 +48,7 @@ namespace covid19_tracker
         private async void PrepareData()
         {
             ReadTrackerJson();
+            await ReadNewsJson();
             _track.Response.Sort((response, response1) => response1.Cases.Total.CompareTo(response.Cases.Total));
             foreach (var c in _track.Response)
                 if (c.Country == "World" || c.Country == "All")
@@ -72,7 +73,6 @@ namespace covid19_tracker
                     });
                 }
 
-            await ReadNewsJson();
             BindData();
             await Task.Run(UpdateTimer);
         }
@@ -112,21 +112,28 @@ namespace covid19_tracker
             //Updatetime.DataContext = _vm.Vm;
             SelectedCountry.DataContext = _vm.CountryVm[0];
             Worldwide.DataContext = _vm.WorldwideVm;
+            BindNewsData();
 
-            card1.DataContext = _vm.NewsVm[0];
-            card2.DataContext = _vm.NewsVm[1];
-            card3.DataContext = _vm.NewsVm[2];
-            card4.DataContext = _vm.NewsVm[3];
-            card5.DataContext = _vm.NewsVm[4];
-            card6.DataContext = _vm.NewsVm[5];
-            card7.DataContext = _vm.NewsVm[6];
-            card8.DataContext = _vm.NewsVm[7];
-            card9.DataContext = _vm.NewsVm[8];
-            card10.DataContext = _vm.NewsVm[9];
-            card11.DataContext = _vm.NewsVm[10];
-            card12.DataContext = _vm.NewsVm[11];
         }
 
+        private void BindNewsData()
+        {
+            try
+            {
+                var grids = new List<Grid>(11) {card1,card2,card3,card4,card5,card6,card7,card8,card9,card10,card11};
+                for (var i = 0; i < grids.Count; i++)
+                {
+                    if (_vm.NewsVm[i] != null)
+                        grids[i].DataContext = _vm.NewsVm[i];
+                }
+
+            }
+            catch(Exception ex)
+            {
+                Task.Run(() =>
+                    MessageBox.Show($"An unknown error has been detected\nCode: {ex.HResult}\n{ex.Message}","Oops",MessageBoxButton.OK,MessageBoxImage.Error));
+            }
+        }
         private static double CalculateDeathRate(int deaths, int confirmedCases)
         {
             return Math.Round(deaths / (double) confirmedCases * 100, 2);
@@ -304,20 +311,10 @@ namespace covid19_tracker
         private void ShareButton_OnClick(object sender, RoutedEventArgs e)
         {
             var index = int.Parse(((Button) e.Source).Uid);
-            switch (index)
+            if (index < 0 || index >= _vm.NewsVm.Count) return;
+            if (_vm.NewsVm[index] != null)
             {
-                case 0:
-                    Process.Start(_vm.NewsVm[index].Url);
-                    break;
-                case 1:
-                    Process.Start(_vm.NewsVm[index].Url);
-                    break;
-                case 2:
-                    Process.Start(_vm.NewsVm[index].Url);
-                    break;
-                case 3:
-                    Process.Start(_vm.NewsVm[index].Url);
-                    break;
+                Process.Start(_vm.NewsVm[index].Url);
             }
         }
     }
