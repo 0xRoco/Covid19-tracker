@@ -6,6 +6,7 @@ namespace covid19_tracker.ViewModels
     {
         public DateTime UpdateTime { get; set; }
         public int NextUpdateIn { get; set; }
+        public int SelectedLanguage { get; set; }
 
         public class Country
         {
@@ -42,6 +43,19 @@ namespace covid19_tracker.ViewModels
             public DateTime PublishedAt { get; set; }
             public string Content { get; set; }
             public string Source { get; set; }
+        }
+
+        public class Localisation
+        {
+            public string HomeBtn { get; set; }
+            public string NewsBtn { get; set; }
+            public string TotalConfirmedText { get; set; }
+            public string TotalDeathsText { get; set; }
+            public string TotalRecoveredText { get; set; }
+            public string ActiveText { get; set; }
+            public string CriticalText { get; set; }
+            public string MortalityRateText { get; set; }
+            public string WorldwideStatisticsText { get; set; }
         }
     }
 }

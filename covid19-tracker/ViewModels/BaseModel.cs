@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Controls.Primitives;
 using Jeuxjeux20.Mvvm;
 
 namespace covid19_tracker.ViewModels
@@ -25,6 +24,17 @@ namespace covid19_tracker.ViewModels
                 Model.NextUpdateIn = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(NextUpdateIn));
+            }
+        }
+
+        public int SelectedLanguage
+        {
+            get => Model.SelectedLanguage;
+            set
+            {
+                Model.SelectedLanguage = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedLanguage));
             }
         }
 
@@ -129,7 +139,6 @@ namespace covid19_tracker.ViewModels
                 }
             }
         }
-
 
         public class Worldwide : ViewModelBase<Base.Worldwide>
         {
@@ -309,6 +318,108 @@ namespace covid19_tracker.ViewModels
                     Model.Source = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(Source));
+                }
+            }
+        }
+
+        public class Localisation : ViewModelBase<Base.Localisation>
+        {
+            public string HomeBtn
+            {
+                get => Model.HomeBtn;
+                set
+                {
+                    Model.HomeBtn = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(HomeBtn));
+                }
+            }
+
+            public string NewsBtn
+            {
+                get => Model.NewsBtn;
+                set
+                {
+                    Model.NewsBtn = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(NewsBtn));
+                }
+            }
+
+            public string TotalConfirmedText
+            {
+                get => Model.TotalConfirmedText;
+                set
+                {
+                    Model.TotalConfirmedText = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(TotalConfirmedText));
+                }
+            }
+
+            public string TotalDeathsText
+            {
+                get => Model.TotalDeathsText;
+                set
+                {
+                    Model.TotalDeathsText = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(TotalDeathsText));
+                }
+            }
+
+            public string TotalRecoveredText
+            {
+                get => Model.TotalRecoveredText;
+                set
+                {
+                    Model.TotalRecoveredText = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(TotalRecoveredText));
+                }
+            }
+
+            public string ActiveText
+            {
+                get => Model.ActiveText;
+                set
+                {
+                    Model.ActiveText = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(ActiveText));
+                }
+            }
+
+            public string CriticalText
+            {
+                get => Model.CriticalText;
+                set
+                {
+                    Model.CriticalText = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(CriticalText));
+                }
+            }
+
+            public string MortalityRateText
+            {
+                get => Model.MortalityRateText;
+                set
+                {
+                    Model.MortalityRateText = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(MortalityRateText));
+                }
+            }
+
+            public string WorldwideStatisticsText
+            {
+                get => Model.WorldwideStatisticsText;
+                set
+                {
+                    Model.WorldwideStatisticsText = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(WorldwideStatisticsText));
                 }
             }
         }
