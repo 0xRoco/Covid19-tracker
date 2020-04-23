@@ -29,6 +29,8 @@ namespace covid19_tracker
 
         private string NewsCountry = "us";
         private string NewsLanguage = "en";
+        private string NewsApiKey = ""; // NEWSAPI.ORG KEY GOES HERE
+        private string CovidApiKey = ""; // RAPIDAPI.COM GOES HERE!
 
         public MainWindow()
         {
@@ -208,7 +210,7 @@ namespace covid19_tracker
         {
             await Task.Delay(500);
             _client = new RestClient(
-                $"http://newsapi.org/v2/top-headlines?q=coronavirus&covid19&language={NewsLanguage}&apiKey=3a0fa4d73e4349fc9847ae22da3ede58");
+                $"http://newsapi.org/v2/top-headlines?q=coronavirus&covid19&language={NewsLanguage}&apiKey={NewsApiKey}");
             var request = new RestRequest(Method.GET);
             var response = _client.Execute(request);
             _news = JsonConvert.DeserializeObject<jsonParse.News>(response.Content);
@@ -306,7 +308,7 @@ namespace covid19_tracker
             _client = new RestClient("https://covid-193.p.rapidapi.com/statistics");
             var request = new RestRequest(Method.GET);
             request.AddHeader("x-rapidapi-host", "covid-193.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", "db654bb9eemshe5a8718dd1418ffp1b94abjsna0a6321ba60a");
+            request.AddHeader("x-rapidapi-key", $"{CovidApiKey}");
             var response = _client.Execute(request);
             _track = JsonConvert.DeserializeObject<jsonParse.Tracker>(response.Content);
             File.WriteAllText(TrackerDataFile, response.Content);
